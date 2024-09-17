@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import {Heart, ShoppingCart} from "lucide-react";
+import Image from "next/image";
 
-interface Products {
+interface Product {
   id: number;
   attributes: {
     title: string;
@@ -36,36 +38,57 @@ interface Products {
   };
 }
 
-interface Data {
-  data: [Products];
+interface ProductCardProps {
+  data: [Product];
 }
 
-async function ProductCard({data}: Data) {
+export default function ProductCard({data}: ProductCardProps) {
   return (
-    <>
-      {data.map((Element, index) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {data.map((product, index) => (
         <div
           key={index}
-          className="flex flex-col items-center justify-center border border-black w-80 h-[506px] rounded-lg"
+          className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg"
         >
-          <div className="w-60">{}</div>
-          <div className="w-72 flex flex-col items-center justify-center">
-            <div className="w-10">{Element.attributes.title}</div>
-            <div className="w-32"> {Element.attributes.introduction} </div>
-            <div className="w-20">{Element.attributes.price}</div>
-            <div className="flex space-x-4 mt-4">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded flex items-center justify-center">
-                <ShoppingCart size={20} />
-              </button>
-              <button className="bg-red-500 text-white px-4 py-2 rounded flex items-center justify-center">
-                <Heart size={20} />
-              </button>
+          <div className="h-64 w-full overflow-hidden">
+            <img
+              src={
+                product.attributes.media.data[0]?.attributes.formats.medium
+                  ?.url || "/placeholder.svg"
+              }
+              alt={product.attributes.title}
+              className="transition-transform duration-300 hover:scale-105"
+            />
+          </div>
+          <div className="p-4 flex flex-col flex-grow">
+            <h2 className="text-xl font-semibold mb-2 text-gray-800">
+              {product.attributes.title}
+            </h2>
+            <p className="text-sm text-gray-600 mb-4 flex-grow">
+              {product.attributes.introduction}
+            </p>
+            <div className="flex items-center justify-between">
+              <span className="text-2xl font-bold text-gray-900">
+                ${product.attributes.price}
+              </span>
+              <div className="flex space-x-2">
+                <button
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-2 rounded-full transition-colors duration-300 flex items-center justify-center"
+                  aria-label="Add to cart"
+                >
+                  <ShoppingCart size={20} />
+                </button>
+                <button
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-3 py-2 rounded-full transition-colors duration-300 flex items-center justify-center"
+                  aria-label="Add to favorites"
+                >
+                  <Heart size={20} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
-
-export default ProductCard;
