@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import {Heart, ShoppingCart} from "lucide-react";
-import Image from "next/image";
 
 interface Product {
   id: number;
@@ -44,11 +43,11 @@ interface ProductCardProps {
 
 export default function ProductCard({data}: ProductCardProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <>
       {data.map((product, index) => (
         <div
           key={index}
-          className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg"
+          className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg w-fit"
         >
           <div className="h-64 w-full overflow-hidden">
             <img
@@ -67,21 +66,23 @@ export default function ProductCard({data}: ProductCardProps) {
             <p className="text-sm text-gray-600 mb-4 flex-grow">
               {product.attributes.introduction}
             </p>
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-gray-900">
+            <div className="flex  flex-col items-center justify-between">
+              <span className="text-2xl font-bold text-gray-900 self-start">
                 ${product.attributes.price}
               </span>
-              <div className="flex space-x-2">
+              <div className="flex flex-row gap-5 justify-between items-center w-full">
                 <button
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-2 rounded-full transition-colors duration-300 flex items-center justify-center"
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-3 py-2 rounded-lg transition-colors duration-300 flex items-center justify-center w-1/2 gap-3 border my-2"
                   aria-label="Add to cart"
                 >
+                  Agregar al carrito
                   <ShoppingCart size={20} />
                 </button>
                 <button
-                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-3 py-2 rounded-full transition-colors duration-300 flex items-center justify-center"
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90 px-3 py-2 rounded-lg transition-colors duration-300 flex items-center justify-center w-1/2 gap-3 border my-2"
                   aria-label="Add to favorites"
                 >
+                  Favoritos
                   <Heart size={20} />
                 </button>
               </div>
@@ -89,6 +90,6 @@ export default function ProductCard({data}: ProductCardProps) {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }

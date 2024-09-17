@@ -17,7 +17,9 @@ export default async function Home() {
   return (
     <div>
       <main>
-        <ProductCard data={data} />
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 mx-10 my-10">
+          <ProductCard data={data} />
+        </div>
       </main>
     </div>
   );
