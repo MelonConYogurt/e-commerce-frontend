@@ -1,5 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import {Heart, ShoppingCart} from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface Product {
   id: number;
@@ -49,15 +56,26 @@ export default function ProductCard({data}: ProductCardProps) {
           key={index}
           className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg w-fit"
         >
-          <div className="h-64 w-full overflow-hidden">
-            <img
-              src={
-                product.attributes.media.data[0]?.attributes.formats.medium
-                  ?.url || "/placeholder.svg"
-              }
-              alt={product.attributes.title}
-              className="transition-transform duration-300 hover:scale-105"
-            />
+          <div className="h-64 w-full overflow-hidden flex flex-col justify-center items-center">
+            <Carousel className="w-full max-w-xs mx-1">
+              <CarouselContent>
+                {product.attributes.media.data.map((mediaItem) => (
+                  <CarouselItem key={mediaItem.id}>
+                    <img
+                      src={
+                        mediaItem.attributes.formats.medium?.url ||
+                        mediaItem.attributes.url ||
+                        "/placeholder.svg"
+                      }
+                      alt={`${product.attributes.title} - Image`}
+                      className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
           <div className="p-4 flex flex-col flex-grow">
             <h2 className="text-xl font-semibold mb-2 text-gray-800">
