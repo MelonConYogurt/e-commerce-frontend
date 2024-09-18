@@ -52,12 +52,12 @@ export default function RootLayout({
               </li>
             </ul>
             <div className="flex flex-row gap-4">
-              <div className="flex flex-row items-center justify-center gap-1">
-                <ShoppingCart />
+              <div className="flex flex-row items-start justify-center gap-1">
+                <ShoppingCart size={20} />
                 <span>Mi carrito</span>
               </div>
               <div className="flex flex-row items-center justify-center gap-1">
-                <Heart />
+                <Heart size={20} />
                 <span>Favoritos</span>
               </div>
             </div>
