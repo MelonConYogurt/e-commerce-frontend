@@ -8,6 +8,7 @@ interface Product {
     name: string;
     price: number;
     stock: number;
+    slug: string;
     introduction: string;
     description: string;
     colors: {
@@ -61,7 +62,7 @@ export default function ProductCard({data}: ProductCardProps) {
           </div>
 
           <div className="p-4 flex flex-col ">
-            <Link href={""}>
+            <Link href={`/productos/${product.attributes.slug}`}>
               <h2 className="text-xl font-semibold mb-2 text-gray-800">
                 {product.attributes.name}
               </h2>
