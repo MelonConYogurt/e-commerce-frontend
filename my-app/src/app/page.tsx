@@ -1,25 +1,22 @@
-import ProductCard from "@/components/Product";
-import GetAllProducts from "@/utils/getAllProducts";
-
-async function fetchData() {
-  try {
-    const response = await GetAllProducts();
-    return response || [];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
+/* eslint-disable @next/next/no-img-element */
+import Banner from "@/components/Banner";
 
 export default async function Home() {
-  const data = await fetchData();
-
   return (
     <div>
-      <main>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 mx-10 my-10">
-          <ProductCard data={data} />
-        </div>
+      <main className="flex flex-col justify-center items-center">
+        <Banner></Banner>
+        <section className="w-full h-fit mx-10 my-10 flex flex-col justify-center items-center ">
+          <h1 className="text-3xl my-10 text">Unete a la moda con nosotros</h1>
+          <div className="flex flex-row gap-5 overflow-x-scroll">
+            <img className="rounded-lg" src="images/raro1.png" alt="imagen" />
+            <img className="rounded-lg" src="images/raro2.png" alt="imagen" />
+            <img className="rounded-lg" src="images/raro3.png" alt="imagen" />
+          </div>
+        </section>
+        <section>
+          <h1 className="text-3xl my-10 text">Nuestros ultimos disenos</h1>
+        </section>
       </main>
     </div>
   );

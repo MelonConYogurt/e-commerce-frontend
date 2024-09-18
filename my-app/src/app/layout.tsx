@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import {Heart, ShoppingCart} from "lucide-react";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,16 +37,16 @@ export default function RootLayout({
           </div>
           <ul className="flex flex-row gap-4">
             <li>
-              <a href="/">Home</a>
+              <Link href="/">Home</Link>
             </li>
             <li>
-              <a href="/productos">Productos</a>
+              <Link href="/productos">Productos</Link>
             </li>
             <li>
-              <a href="/categorias">Categorías</a>
+              <Link href="/categorias">Categorías</Link>
             </li>
             <li>
-              <a href="/ofertas">Ofertas</a>
+              <Link href="/ofertas">Ofertas</Link>
             </li>
           </ul>
           <div className="flex flex-row gap-4">
