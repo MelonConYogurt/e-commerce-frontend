@@ -1,7 +1,7 @@
-async function GetAllProducts(limit: number = 1000) {
+async function GetProductsFilter(limit: number = 1000, filter: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products?populate=*&pagination[limit]=${limit}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products?populate=*&pagination[limit]=${limit}&${filter}`,
       {
         method: "GET",
         headers: {
@@ -22,4 +22,4 @@ async function GetAllProducts(limit: number = 1000) {
   }
 }
 
-export default GetAllProducts;
+export default GetProductsFilter;
