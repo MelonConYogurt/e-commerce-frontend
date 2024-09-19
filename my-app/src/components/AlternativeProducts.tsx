@@ -3,48 +3,8 @@
 
 import {useState} from "react";
 import {ShoppingCart, Heart} from "lucide-react";
-
-export interface Product {
-  id: number;
-  attributes: {
-    name: string;
-    price: number;
-    stock: number;
-    slug: string;
-    introduction: string;
-    description: string;
-    colors?: {
-      options: string[];
-    };
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-    stocksize10?: number;
-    stocksize9?: number;
-    stocksize8?: number;
-    stocksize7?: number;
-    company?: string;
-    media: {
-      data: {
-        id: number;
-        attributes: {
-          url: string;
-          formats: {
-            small?: {
-              url: string;
-            };
-            medium?: {
-              url: string;
-            };
-            large?: {
-              url: string;
-            };
-          };
-        };
-      }[];
-    };
-  };
-}
+import {Product} from "../types";
+import Link from "next/link";
 
 interface ProductCardProps {
   data: Product[];
@@ -54,7 +14,7 @@ export default function ProductCard({data}: ProductCardProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <>
       {data.map((product, index) => (
         <div
           key={index}
@@ -77,7 +37,9 @@ export default function ProductCard({data}: ProductCardProps) {
           <div className="p-6">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-bold text-gray-800">
-                {product.attributes.name}
+                <Link href={`productos/${product.attributes.slug}`}>
+                  {product.attributes.name}
+                </Link>
               </h2>
               <span className="text-3xl font-bold text-green-600">
                 ${product.attributes.price}
@@ -92,15 +54,13 @@ export default function ProductCard({data}: ProductCardProps) {
               <div className="mb-4">
                 <h3 className="font-semibold mb-2">Colors:</h3>
                 <div className="flex gap-2">
-                  {product.attributes.colors.options.map(
-                    (color, colorIndex) => (
-                      <div
-                        key={colorIndex}
-                        className="w-6 h-6 rounded-full border-2 border-gray-300"
-                        style={{backgroundColor: color}}
-                      ></div>
-                    )
-                  )}
+                  {product.attributes.colors.data.map((color, colorIndex) => (
+                    <div
+                      key={colorIndex}
+                      className="w-6 h-6 rounded-full border-2 border-gray-300"
+                      style={{backgroundColor: color.attributes.name}}
+                    ></div>
+                  ))}
                 </div>
               </div>
             )}
@@ -131,10 +91,7 @@ export default function ProductCard({data}: ProductCardProps) {
             )}
 
             <div className="flex justify-between items-center">
-              <span className="text-gray-600">
-                In stock: {product.attributes.stock}
-              </span>
-              <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+              <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors w-full justify-center">
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 Add to Cart
               </button>
@@ -162,6 +119,6 @@ export default function ProductCard({data}: ProductCardProps) {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }

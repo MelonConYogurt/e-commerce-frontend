@@ -3,13 +3,9 @@ export interface Product {
   attributes: {
     name: string;
     price: number;
-    stock: number;
     slug: string;
     introduction: string;
     description: string;
-    colors?: {
-      options: string[];
-    };
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
@@ -18,6 +14,14 @@ export interface Product {
     stocksize8?: number;
     stocksize7?: number;
     company?: string;
+    colors: {
+      data: {
+        id: string;
+        attributes: {
+          name: string;
+        };
+      }[];
+    };
     media: {
       data: {
         id: number;

@@ -6,7 +6,9 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {Separator} from "@/components/ui/separator";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import ProductCard from "@/components/Products";
+// import ProductCard from "@/components/Products";
+import ProductCard from "@/components/AlternativeProducts";
+
 import GetAllProducts from "@/utils/getAllProducts";
 import GetProductsFilter from "@/utils/DinamicFilter";
 import Transition from "@/components/Transition";
@@ -147,7 +149,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-          <div className="flex-1 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-5">
+          <div className="flex-1 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
             <ProductCard data={data} />
           </div>
         </div>
