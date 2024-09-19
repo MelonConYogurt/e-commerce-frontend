@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
 
-interface Product {
+export interface Product {
   id: number;
   attributes: {
     name: string;
@@ -17,6 +18,11 @@ interface Product {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
+    stocksize10?: number;
+    stocksize9?: number;
+    stocksize8?: number;
+    stocksize7?: number;
+    company?: string;
     media: {
       data: {
         id: number;
@@ -40,7 +46,7 @@ interface Product {
 }
 
 interface ProductCardProps {
-  data: [Product];
+  data: Product[];
 }
 
 export default function ProductCard({data}: ProductCardProps) {
@@ -59,6 +65,17 @@ export default function ProductCard({data}: ProductCardProps) {
                 alt=""
               />
             </div>
+            {/* <div className="flex flex-row gap-2 my-2 rounded-md">
+              {product.attributes.media.data.map((image, index) => (
+                <img
+                  className="rounded-md"
+                  key={index}
+                  src={image.attributes.formats.small?.url}
+                  width={60}
+                  height={60}
+                />
+              ))}
+            </div> */}
           </div>
 
           <div className="p-4 flex flex-col ">
