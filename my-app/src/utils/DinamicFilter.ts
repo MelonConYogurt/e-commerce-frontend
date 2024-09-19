@@ -1,4 +1,4 @@
-async function GetProductsFilter(limit: number = 1000, filter: string) {
+async function GetProductsFilter(limit: number = 1000, filter: string = "") {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/products?populate=*&pagination[limit]=${limit}&${filter}`,

@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
@@ -10,12 +10,11 @@ import ProductCard from "@/components/Product";
 import GetAllProducts from "@/utils/getAllProducts";
 import GetProductsFilter from "@/utils/DinamicFilter";
 import Transition from "@/components/Transition";
-
-export interface Product {
-  // ... (keep your existing Product interface)
-}
+import {Product} from "../../types";
 
 export default function Home() {
+  type Category = "gender" | "company";
+  const [priceRange, setPriceRange] = useState({min: "", max: ""});
   const [data, setData] = useState<Product[]>([]);
   const [values, setValues] = useState({
     gender: {
@@ -27,7 +26,6 @@ export default function Home() {
       Adidas: false,
     },
   });
-  const [priceRange, setPriceRange] = useState({min: "", max: ""});
 
   useEffect(() => {
     async function fetchData() {
@@ -42,7 +40,30 @@ export default function Home() {
     fetchData();
   }, []);
 
-  type Category = "gender" | "company";
+  const StructureFilters = useCallback(() => {
+    let ConcatFilters = "";
+    Object.entries(values).forEach(([category, object]) => {
+      Object.entries(object).forEach(([key, value]) => {
+        if (value) {
+          ConcatFilters += `filters[${category}][$eq]=${key}&`;
+        }
+      });
+    });
+    return ConcatFilters;
+  }, [values]);
+
+  useEffect(() => {
+    async function UpdateData() {
+      try {
+        const filters = StructureFilters();
+        const newResponse = await GetProductsFilter(1000, filters);
+        setData(newResponse);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    UpdateData();
+  }, [StructureFilters]);
 
   async function handleInputChanges(
     category: Category,
@@ -56,15 +77,6 @@ export default function Home() {
         [id]: checked,
       },
     }));
-    try {
-      const newResponse = await GetProductsFilter(
-        1000,
-        `filters[${category}][$eq]=${id}`
-      );
-      setData(newResponse);
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   return (
@@ -110,28 +122,32 @@ export default function Home() {
               <Separator />
               <div className="space-y-4">
                 <h3 className="font-semibold">Rango de precio</h3>
-                <div className="space-y-2">
-                  <Input
-                    type="number"
-                    placeholder="Desde: 0"
-                    value={priceRange.min}
-                    onChange={(e) =>
-                      setPriceRange((prev) => ({...prev, min: e.target.value}))
-                    }
-                  />
-                  <Input
-                    type="number"
-                    placeholder="Hasta: 0"
-                    value={priceRange.max}
-                    onChange={(e) =>
-                      setPriceRange((prev) => ({...prev, max: e.target.value}))
-                    }
-                  />
-                </div>
+                <Input
+                  type="number"
+                  placeholder="Desde: 0"
+                  value={priceRange.min}
+                  onChange={(e) =>
+                    setPriceRange((prev) => ({
+                      ...prev,
+                      min: e.target.value,
+                    }))
+                  }
+                />
+                <Input
+                  type="number"
+                  placeholder="Hasta: 0"
+                  value={priceRange.max}
+                  onChange={(e) =>
+                    setPriceRange((prev) => ({
+                      ...prev,
+                      max: e.target.value,
+                    }))
+                  }
+                />
               </div>
             </CardContent>
           </Card>
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="flex-1 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-5">
             <ProductCard data={data} />
           </div>
         </div>
