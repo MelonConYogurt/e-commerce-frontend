@@ -1,62 +1,167 @@
-/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
-import {Product} from "@/types";
+"use client";
+
+import {useState} from "react";
+import {ShoppingCart, Heart} from "lucide-react";
+
+export interface Product {
+  id: number;
+  attributes: {
+    name: string;
+    price: number;
+    stock: number;
+    slug: string;
+    introduction: string;
+    description: string;
+    colors?: {
+      options: string[];
+    };
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    stocksize10?: number;
+    stocksize9?: number;
+    stocksize8?: number;
+    stocksize7?: number;
+    company?: string;
+    media: {
+      data: {
+        id: number;
+        attributes: {
+          url: string;
+          formats: {
+            small?: {
+              url: string;
+            };
+            medium?: {
+              url: string;
+            };
+            large?: {
+              url: string;
+            };
+          };
+        };
+      }[];
+    };
+  };
+}
 
 interface ProductCardProps {
   data: Product[];
 }
 
 export default function ProductCard({data}: ProductCardProps) {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
   return (
-    <>
-      {data.map((product) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {data.map((product, index) => (
         <div
-          key={product.id}
-          className="flex flex-col border rounded-md overflow-hidden shadow-md"
+          key={index}
+          className="bg-white rounded-lg shadow-lg overflow-hidden"
         >
-          {/* Main Image */}
-          <div className="bg-[#f6f6f6]">
+          <div className="relative">
             <img
-              className="w-full h-auto"
+              className="w-full h-96 object-cover"
               src={
-                product.attributes.media.data[0]?.attributes.formats.medium
-                  ?.url || "/placeholder.jpg"
+                product.attributes.media.data[activeImageIndex].attributes
+                  .formats.large?.url || "/placeholder.svg"
               }
               alt={product.attributes.name}
             />
+            <button className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md">
+              <Heart className="w-6 h-6 text-red-500" />
+            </button>
           </div>
-          {/* Thumbnail Images */}
-          <div className="flex flex-row gap-2 my-2 px-2">
-            {product.attributes.media.data.map((image) => (
-              <img
-                className="rounded-md cursor-pointer"
-                key={image.id}
-                src={image.attributes.formats.small?.url || "/placeholder.jpg"}
-                width={60}
-                height={60}
-                alt={`Thumbnail for ${product.attributes.name}`}
-              />
-            ))}
-          </div>
-          {/* Product Details */}
-          <div className="p-4 flex flex-col">
-            <Link href={`/productos/${product.attributes.slug}`}>
-              <a className="text-xl font-semibold mb-2 text-gray-800 hover:underline">
+
+          <div className="p-6">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold text-gray-800">
                 {product.attributes.name}
-              </a>
-            </Link>
-            <p className="text-sm text-gray-600 mb-4 flex-grow">
-              {product.attributes.introduction}
-            </p>
-            <div className="flex flex-col items-center">
-              <span className="font-bold text-gray-900">
+              </h2>
+              <span className="text-3xl font-bold text-green-600">
                 ${product.attributes.price}
               </span>
+            </div>
+
+            <p className="text-gray-600 mb-4">
+              {product.attributes.introduction}
+            </p>
+
+            {product.attributes.colors && (
+              <div className="mb-4">
+                <h3 className="font-semibold mb-2">Colors:</h3>
+                <div className="flex gap-2">
+                  {product.attributes.colors.options.map(
+                    (color, colorIndex) => (
+                      <div
+                        key={colorIndex}
+                        className="w-6 h-6 rounded-full border-2 border-gray-300"
+                        style={{backgroundColor: color}}
+                      ></div>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">Available Sizes:</h3>
+              <div className="flex gap-2">
+                {["7", "8", "9", "10"].map(
+                  (size) =>
+                    product.attributes[
+                      `stocksize${size}` as keyof typeof product.attributes
+                    ] && (
+                      <div
+                        key={size}
+                        className="px-3 py-1 border border-gray-300 rounded-md"
+                      >
+                        {size}
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
+
+            {product.attributes.company && (
+              <p className="text-gray-600 mb-4">
+                Brand: {product.attributes.company}
+              </p>
+            )}
+
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">
+                In stock: {product.attributes.stock}
+              </span>
+              <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <div className="px-6 pb-6">
+            <div className="flex gap-2 overflow-x-auto">
+              {product.attributes.media.data.map((image, imgIndex) => (
+                <img
+                  key={imgIndex}
+                  className={`w-20 h-20 object-cover rounded-md cursor-pointer ${
+                    activeImageIndex === imgIndex
+                      ? "border-2 border-blue-500"
+                      : ""
+                  }`}
+                  src={
+                    image.attributes.formats.small?.url || "/placeholder.svg"
+                  }
+                  alt={`${product.attributes.name} - Image ${imgIndex + 1}`}
+                  onClick={() => setActiveImageIndex(imgIndex)}
+                />
+              ))}
             </div>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
