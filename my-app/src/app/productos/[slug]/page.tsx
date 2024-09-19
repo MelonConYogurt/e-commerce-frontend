@@ -1,5 +1,4 @@
 import GetProductBySlug from "@/utils/SlugProduct";
-import SingleProductCard from "@/components/SIngleProduct";
 
 export default async function Page({params}: {params: {slug: string}}) {
   async function fetchData(slug: string) {
@@ -13,9 +12,5 @@ export default async function Page({params}: {params: {slug: string}}) {
     }
   }
   const data = await fetchData(params.slug);
-  return (
-    <div>
-      <SingleProductCard data={data}></SingleProductCard>
-    </div>
-  );
+  return <div></div>;
 }
