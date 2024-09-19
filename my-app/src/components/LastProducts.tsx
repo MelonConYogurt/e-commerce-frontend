@@ -1,4 +1,4 @@
-import ProductCard from "./Product";
+import ProductCard from "./Products";
 import GetAllProducts from "@/utils/getAllProducts";
 
 async function fetchData() {

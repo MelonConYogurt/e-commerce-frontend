@@ -7,7 +7,7 @@ export interface Product {
     slug: string;
     introduction: string;
     description: string;
-    colors: {
+    colors?: {
       options: string[];
     };
     createdAt: string;
