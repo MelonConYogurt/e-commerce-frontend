@@ -2,24 +2,18 @@ export interface Product {
   id: number;
   attributes: {
     name: string;
-    price: number;
+    price: string;
     slug: string;
     introduction: string;
     description: string;
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    stocksize10?: number;
-    stocksize9?: number;
-    stocksize8?: number;
-    stocksize7?: number;
-    company?: string;
-    colors: {
+    discount?: string;
+    sizes: {
       data: {
-        id: string;
-        attributes: {
-          name: string;
-        };
+        size: number;
+        stock: number;
       }[];
     };
     media: {
@@ -39,7 +33,40 @@ export interface Product {
             };
           };
         };
-      }[];
-    };
+      };
+    }[];
+  };
+  colors?: {
+    data: {
+      id: number;
+      attributes: {
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+      };
+    }[];
+  };
+  categories?: {
+    data: {
+      id: number;
+      attributes: {
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+      };
+    }[];
+  };
+  tags?: {
+    data: {
+      id: number;
+      attributes: {
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+        publishedAt: string;
+      };
+    }[];
   };
 }
