@@ -33,40 +33,47 @@ export interface Product {
             };
           };
         };
-      };
-    }[];
+      }[];
+    };
+    colors?: {
+      data: {
+        id: number;
+        attributes: {
+          name: string;
+        };
+      }[];
+    };
+    categories?: {
+      data: {
+        id: number;
+        attributes: {
+          name: string;
+        };
+      }[];
+    };
+    tags?: {
+      data: {
+        id: number;
+        attributes: {
+          name: string;
+        };
+      }[];
+    };
   };
-  colors?: {
-    data: {
-      id: number;
-      attributes: {
-        name: string;
-        createdAt: string;
-        updatedAt: string;
-        publishedAt: string;
-      };
-    }[];
+}
+
+export interface Category {
+  id: number;
+  attributes: {
+    name: string;
   };
-  categories?: {
-    data: {
-      id: number;
-      attributes: {
-        name: string;
-        createdAt: string;
-        updatedAt: string;
-        publishedAt: string;
-      };
-    }[];
-  };
-  tags?: {
-    data: {
-      id: number;
-      attributes: {
-        name: string;
-        createdAt: string;
-        updatedAt: string;
-        publishedAt: string;
-      };
-    }[];
-  };
+}
+
+export interface Categories {
+  data: Category[];
+}
+
+export interface FilterCategory {
+  name: string;
+  value: boolean;
 }
