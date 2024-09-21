@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import Transition from "@/components/Transition";
 import GetProductBySlug from "@/utils/SlugProduct";
 import {useEffect, useState} from "react";
 import {ShoppingCart, Heart} from "lucide-react";
@@ -92,7 +93,7 @@ export default function Page({params}: {params: {slug: string}}) {
   }, [params.slug]);
 
   return (
-    <>
+    <Transition>
       {data.map((product, index) => (
         <div key={index} className="bg-white w-full overflow-hidden">
           <div className="flex flex-col lg:flex-row gap-10">
@@ -188,7 +189,7 @@ export default function Page({params}: {params: {slug: string}}) {
                       {product.attributes.categories.data.map((category) => (
                         <span
                           key={category.id}
-                          className="bg-gray-200 px-2 py-1 rounded-md text-sm"
+                          className="bg-blue-100 p-2 borderborder-gray-300 rounded-md text-sm"
                         >
                           {category.attributes.name}
                         </span>
@@ -207,6 +208,6 @@ export default function Page({params}: {params: {slug: string}}) {
           </div>
         </div>
       ))}
-    </>
+    </Transition>
   );
 }

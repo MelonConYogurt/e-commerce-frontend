@@ -113,6 +113,14 @@ export default function Home() {
     );
   }
 
+  function handleInputChangesColors(name: string, checked: boolean) {
+    setColorsValues((prev) =>
+      prev.map((item) =>
+        item.name === name ? {...item, value: checked} : item
+      )
+    );
+  }
+
   return (
     <Transition>
       <div className="container mx-auto px-4 py-8">
@@ -171,17 +179,27 @@ export default function Home() {
               <div className="space-y-4">
                 <h3 className="font-semibold">Colors</h3>
                 {colorsValues.map((element, index) => (
-                  <div key={index} className="flex items-center space-x-2">
+                  <div
+                    key={index}
+                    className="flex flex-row items-center space-x-2 w-full"
+                  >
                     <input
-                      className={`w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`}
+                      className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       type="checkbox"
                       id={`tag-${index}`}
                       checked={element.value}
                       onChange={(e) =>
-                        handleInputChangesTags(element.name, e.target.checked)
+                        handleInputChangesColors(element.name, e.target.checked)
                       }
                     />
-                    <Label htmlFor={`tag-${index}`}>
+                    <div
+                      className={`w-6 h-6 rounded-full border border-white-300`}
+                      style={{backgroundColor: element.name}}
+                    ></div>
+                    <Label
+                      htmlFor={`tag-${index}`}
+                      className={`text-sm font-medium text-${element.name}-700 dark:text-${element.name}-300`}
+                    >
                       {element.name.charAt(0).toUpperCase() +
                         element.name.slice(1)}
                     </Label>

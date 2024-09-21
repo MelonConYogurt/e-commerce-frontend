@@ -50,44 +50,55 @@ function ProductCardItem({product}: ProductCardItemProps) {
 
         <p className="text-gray-600 mb-4">{product.attributes.introduction}</p>
 
-        {product.attributes.colors?.data && (
-          <div className="mb-4">
-            <h3 className="font-semibold mb-2">Colores:</h3>
-            <div className="flex gap-2">
-              {product.attributes.colors.data.map((color, colorIndex) => (
-                <div
-                  key={colorIndex}
-                  className="w-6 h-6 rounded-full border-1 border-gray-300"
-                  style={{backgroundColor: color.attributes?.name}}
-                ></div>
-              ))}
+        {product.attributes.colors?.data &&
+          product.attributes.colors?.data.length > 0 && (
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">Colores:</h3>
+              <div className="flex gap-2">
+                {product.attributes.colors.data.map((color, colorIndex) => (
+                  <div
+                    key={colorIndex}
+                    className="w-6 h-6 rounded-full border-1 border-gray-300"
+                    style={{backgroundColor: color.attributes?.name}}
+                  ></div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {product.attributes.sizes?.data && (
-          <div className="mb-4">
-            <h3 className="font-semibold mb-2">Tallas disponibles:</h3>
-            <div className="flex gap-2">
-              {product.attributes.sizes.data.map((size, index) => (
-                <div className="" key={index}>
-                  {size?.size}
-                </div>
-              ))}
+        {product.attributes.sizes &&
+          product.attributes.sizes.data.length > 0 && (
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">Available Sizes:</h3>
+              <div className="flex flex-wrap gap-2">
+                {product.attributes.sizes.data.map((sizeData) => (
+                  <div
+                    key={sizeData.size}
+                    className="px-3 py-1 border border-gray-300 rounded-md"
+                  >
+                    {sizeData.size}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {product.attributes.categories?.data && (
-          <div>
-            <p className="text-gray-600 mb-4">Categorias:</p>
-            <div className="flex flex-wrap gap-2 my-1">
-              {product.attributes.categories.data.map((categoria, index) => (
-                <div key={index}>{categoria.attributes?.name}</div>
-              ))}
+        {product.attributes.categories &&
+          product.attributes.categories.data.length > 0 && (
+            <div className="mb-4">
+              <h3 className="font-semibold mb-2">Categories:</h3>
+              <div className="flex flex-wrap gap-2">
+                {product.attributes.categories.data.map((category) => (
+                  <span
+                    key={category.id}
+                    className="bg-blue-100 p-2 borderborder-gray-300 rounded-md text-sm"
+                  >
+                    {category.attributes.name}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         <div className="flex justify-between items-center">
           <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors w-full justify-center">
