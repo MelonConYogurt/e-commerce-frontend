@@ -29,7 +29,9 @@ export default async function CategoriasMenu() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Categorías</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="text-primary text-base">
+            Categorías
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="flex flex-row">
               <div className="row-span-3">

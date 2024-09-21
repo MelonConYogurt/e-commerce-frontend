@@ -72,10 +72,16 @@ export default function RootLayout({
                 </li>
               </ul>
               <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" className="hidden md:flex">
-                  <ShoppingCart className="h-5 w-5" />
-                  <span className="sr-only">Carrito</span>
-                </Button>
+                <Link legacyBehavior href="/carrito">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hidden md:flex"
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    <span className="sr-only">Carrito</span>
+                  </Button>
+                </Link>
                 <Button variant="ghost" size="icon" className="hidden md:flex">
                   <Heart className="h-5 w-5" />
                   <span className="sr-only">Favoritos</span>
