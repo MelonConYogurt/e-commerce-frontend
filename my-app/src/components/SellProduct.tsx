@@ -4,6 +4,7 @@
 import {Product} from "@/types";
 import {useState} from "react";
 import {ShoppingCart, Heart} from "lucide-react";
+import {useCartStore} from "@/hooks/cart";
 
 interface SellProductCardProps {
   data: Product[];
@@ -11,9 +12,26 @@ interface SellProductCardProps {
 
 function SellProductCard({data}: SellProductCardProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeButtonSize, setActiveButtonSize] = useState(0);
+  const addToCart = useCartStore((state) => state.addToCart);
 
-  const handleAddToCart = () => {
-    console.log("Add to Cart button clicked!");
+  const handleAddToCart = (product: Product) => {
+    if (activeButtonSize !== 0) {
+      const productToAdd = {
+        id: product.id,
+        name: product.attributes.name,
+        price: Number(product.attributes.price),
+        quantity: 1,
+        size: activeButtonSize,
+        media:
+          product.attributes.media.data[0].attributes.formats.small?.url ||
+          "/placeholder.svg",
+      };
+      addToCart(productToAdd);
+      console.log("Add to Cart!: ", productToAdd);
+    } else {
+      console.log("Select a size");
+    }
   };
 
   return (
@@ -94,12 +112,22 @@ function SellProductCard({data}: SellProductCardProps) {
                       <h3 className="font-semibold mb-2">Available Sizes:</h3>
                       <div className="flex flex-wrap gap-2">
                         {product.attributes.sizes.data.map((sizeData) => (
-                          <div
+                          <button
                             key={sizeData.size}
-                            className="px-3 py-1 border border-gray-300 rounded-md"
+                            value={sizeData.size}
+                            onClick={() => setActiveButtonSize(sizeData.size)}
+                            className={`px-3 py-1 border ${
+                              activeButtonSize === sizeData.size
+                                ? "border-black"
+                                : "border-gray-300"
+                            }  rounded-md ${
+                              sizeData.stock <= 0
+                                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                : ""
+                            }`}
                           >
                             {sizeData.size}
-                          </div>
+                          </button>
                         ))}
                       </div>
                     </div>
@@ -121,10 +149,11 @@ function SellProductCard({data}: SellProductCardProps) {
                       </div>
                     </div>
                   )}
+
                 <div className="flex justify-between items-center">
                   <button
                     className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors w-full justify-center"
-                    onClick={handleAddToCart}
+                    onClick={() => handleAddToCart(product)}
                   >
                     <ShoppingCart className="w-5 h-5 mr-2" />
                     Add to Cart

@@ -74,7 +74,11 @@ function ProductCardItem({product}: ProductCardItemProps) {
                 {product.attributes.sizes.data.map((sizeData) => (
                   <div
                     key={sizeData.size}
-                    className="px-3 py-1 border border-gray-300 rounded-md"
+                    className={`px-3 py-1 border border-gray-300 rounded-md ${
+                      sizeData.stock <= 0
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : ""
+                    }`}
                   >
                     {sizeData.size}
                   </div>

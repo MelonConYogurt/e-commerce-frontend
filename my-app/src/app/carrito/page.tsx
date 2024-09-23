@@ -1,19 +1,53 @@
 "use client";
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useCartStore} from "@/hooks/cart";
-import ProductCard from "@/components/AlternativeProducts";
+import CartProducts from "@/components/CartProducts";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
 
 const CarritoPage: React.FC = () => {
-  const products = useCartStore((state) => state.cartProducts);
-  console.log(products);
+  const {cartProducts} = useCartStore();
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const totalPrice = cartProducts.reduce(
+      (acc, product) => acc + product.price * product.quantity,
+      0
+    );
+    setTotal(totalPrice);
+  }, [cartProducts]);
 
   return (
-    <div>
-      <h1>¡Bienvenido a la página del carrito!</h1>
-      <div className="flex-1 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
-        <ProductCard data={products}></ProductCard>
-      </div>
+    <div className="container mx-auto py-8">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">
+            Tu Carrito de Compras
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {cartProducts.length > 0 ? (
+            <CartProducts data={cartProducts} />
+          ) : (
+            <p className="text-center text-gray-500">Tu carrito está vacío</p>
+          )}
+        </CardContent>
+        <CardFooter className="flex justify-between items-center">
+          <div className="text-xl font-semibold">
+            Total: <span className="text-primary">${total.toFixed(2)}</span>
+          </div>
+          <Button size="lg" disabled={cartProducts.length === 0}>
+            Proceder al Pago
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };
