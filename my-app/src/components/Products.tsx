@@ -10,11 +10,11 @@ export default function ProductCard({data}: ProductCardProps) {
   return (
     <>
       {data.map((product, index) => (
-        <div key={index} className="flex flex-col">
+        <div key={index} className="flex flex-col ">
           <div>
-            <div className="bg-[#f6f6f6] ">
+            <div className="bg-[#f6f6f6]  rounded-lg">
               <img
-                className="w-full h-full"
+                className="w-full h-full rounded-lg"
                 src={
                   product.attributes.media.data[0].attributes.formats.medium
                     ?.url
@@ -22,17 +22,6 @@ export default function ProductCard({data}: ProductCardProps) {
                 alt=""
               />
             </div>
-            {/* <div className="flex flex-row gap-2 my-2 rounded-md">
-              {product.attributes.media.data.map((image, index) => (
-                <img
-                  className="rounded-md"
-                  key={index}
-                  src={image.attributes.formats.small?.url}
-                  width={60}
-                  height={60}
-                />
-              ))}
-            </div> */}
           </div>
 
           <div className="p-4 flex flex-col ">
