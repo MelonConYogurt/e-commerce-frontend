@@ -2,7 +2,7 @@
 "use client";
 
 import {useState} from "react";
-import {ShoppingCart, Heart} from "lucide-react";
+import {Heart} from "lucide-react";
 import {Product} from "../types";
 import Link from "next/link";
 
@@ -99,13 +99,6 @@ function ProductCardItem({product}: ProductCardItemProps) {
               </div>
             </div>
           )}
-
-        <div className="flex justify-between items-center">
-          <button className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors w-full justify-center">
-            <ShoppingCart className="w-5 h-5 mr-2" />
-            Añadir al carrito
-          </button>
-        </div>
       </div>
 
       {product.attributes.media?.data && (

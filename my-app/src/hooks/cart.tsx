@@ -1,13 +1,15 @@
 import {create} from "zustand";
+import {Product} from "@/types";
 
-interface State {
-  count: number;
-  increase: () => void;
-  decrease: () => void;
+interface CartState {
+  cartProducts: Product[];
+  addToCart: (product: Product) => void;
 }
 
-export const useStore = create<State>((set) => ({
-  count: 0,
-  increase: () => set((state: State) => ({count: state.count + 1})),
-  decrease: () => set((state: State) => ({count: state.count - 1})),
+export const useCartStore = create<CartState>((set) => ({
+  cartProducts: [],
+  addToCart: (product) =>
+    set((state) => ({
+      cartProducts: [...state.cartProducts, product],
+    })),
 }));
