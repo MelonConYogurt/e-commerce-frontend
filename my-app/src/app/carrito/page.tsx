@@ -25,45 +25,47 @@ const CarritoPage: React.FC = () => {
   }, [cartProducts]);
 
   return (
-    <div className="container  relative">
-      <Card className="rounded-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">
-            Your Shopping Cart
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {cartProducts.length > 0 ? (
-            <CartProducts data={cartProducts} />
-          ) : (
-            <p className="text-center text-gray-500">Tu carrito está vacío</p>
-          )}
-        </CardContent>
-        <CardFooter className="flex justify-between items-center">
-          <div className="text-xl font-semibold">
-            Total:{" "}
-            <span className="text-primary">
-              {" "}
-              {new Intl.NumberFormat("es-CO", {
-                style: "currency",
-                currency: "COP",
-              }).format(Number(total))}
-            </span>
-          </div>
-          <Button size="lg" disabled={cartProducts.length === 0}>
-            Complete purchase
-          </Button>
-        </CardFooter>
-      </Card>
+    <div className="flex items-center justify-center my-20">
+      <div className="container  relative">
+        <Card className="rounded-lg">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">
+              Your Shopping Cart
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {cartProducts.length > 0 ? (
+              <CartProducts data={cartProducts} />
+            ) : (
+              <p className="text-center text-gray-500">Tu carrito está vacío</p>
+            )}
+          </CardContent>
+          <CardFooter className="flex justify-between items-center">
+            <div className="text-xl font-semibold">
+              Total:{" "}
+              <span className="text-primary">
+                {" "}
+                {new Intl.NumberFormat("es-CO", {
+                  style: "currency",
+                  currency: "COP",
+                }).format(Number(total))}
+              </span>
+            </div>
+            <Button size="lg" disabled={cartProducts.length === 0}>
+              Complete purchase
+            </Button>
+          </CardFooter>
+        </Card>
 
-      <Button
-        size="lg"
-        disabled={cartProducts.length === 0}
-        className="absolute top-2 right-2"
-        onClick={() => deleteAll()}
-      >
-        Delete all
-      </Button>
+        <Button
+          size="lg"
+          disabled={cartProducts.length === 0}
+          className="absolute top-2 right-2"
+          onClick={() => deleteAll()}
+        >
+          Delete all
+        </Button>
+      </div>
     </div>
   );
 };

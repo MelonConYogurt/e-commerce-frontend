@@ -21,8 +21,10 @@ export default async function CategoryProducts({
   const data = await fetchData(params.name);
   return (
     <Transition>
-      <div className="flex-1 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
-        <ProductCard data={data} />
+      <div className="flex flex-col md:flex-row gap-8 m-10">
+        <div className="flex-1 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
+          <ProductCard data={data} />
+        </div>
       </div>
     </Transition>
   );

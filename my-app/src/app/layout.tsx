@@ -93,11 +93,7 @@ export default function RootLayout({
               </div>
             </nav>
           </header>
-          <main className="flex-grow">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-              {children}
-            </div>
-          </main>
+          <main className="flex-grow">{children}</main>
           <footer className="border-t mx-3 py-6 md:py-0">
             <div className="flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
               <p className="text-sm text-muted-foreground">

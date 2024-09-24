@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import {toast} from "./use-toast";
 
-interface Product {
+export interface Product {
   id: number;
   name: string;
   price: number;
@@ -14,7 +14,9 @@ interface Product {
 
 interface CartState {
   cartProducts: Product[];
+  favoriteProducts: Product[];
   addToCart: (product: Product) => void;
+  addToFavorite: (product: Product) => void;
   deleteAll: () => void;
   deleteById: (id: number) => void;
   increment: (id: number) => void;
@@ -23,6 +25,7 @@ interface CartState {
 
 export const useCartStore = create<CartState>((set) => ({
   cartProducts: [],
+  favoriteProducts: [],
 
   addToCart: (newProduct) =>
     set((state) => {
@@ -50,6 +53,23 @@ export const useCartStore = create<CartState>((set) => ({
       } else {
         return {
           cartProducts: [...state.cartProducts, newProduct],
+        };
+      }
+    }),
+
+  addToFavorite: (newProduct) =>
+    set((state) => {
+      const productAlreadyInFavorites = state.favoriteProducts.find(
+        (product) => product.id === newProduct.id
+      );
+
+      if (productAlreadyInFavorites) {
+        return {
+          favoriteProducts: state.favoriteProducts,
+        };
+      } else {
+        return {
+          favoriteProducts: [...state.favoriteProducts, newProduct],
         };
       }
     }),

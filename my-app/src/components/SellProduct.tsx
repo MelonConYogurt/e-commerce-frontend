@@ -2,10 +2,11 @@
 "use client";
 
 import {useState} from "react";
-import {ShoppingCart, Heart, Check, AlertCircle} from "lucide-react";
+import {ShoppingCart, Heart, Check, AlertCircle, X} from "lucide-react";
 import {useCartStore} from "@/hooks/cart";
 import {Product} from "@/types";
 import {toast, Toaster} from "sonner";
+import Link from "next/link";
 
 interface SellProductCardProps {
   data: Product[];
@@ -37,26 +38,34 @@ export default function SellProductCard({data}: SellProductCardProps) {
       };
       addToCart(productToAdd);
       console.log(productToAdd);
-      toast(
-        <div className="flex items-center gap-4">
-          <img
-            src={
-              product.attributes.media.data[0].attributes.formats.small?.url ||
-              "/placeholder.svg"
-            }
-            alt={product.attributes.name}
-            className="w-12 h-12 object-cover rounded"
-          />
+      toast.custom((t) => (
+        <div className="flex items-center gap-4 relative w-72 bg-white rounded-lg p-1">
+          <Link legacyBehavior href="/carrito">
+            <img
+              src={
+                product.attributes.media.data[0].attributes.formats.small
+                  ?.url || "/placeholder.svg"
+              }
+              alt={product.attributes.name}
+              className="w-12 h-12 object-cover rounded-lg m-2"
+            />
+          </Link>
           <div>
             <p className="font-semibold">{product.attributes.name}</p>
+
             <p className="text-sm text-gray-600">
               {product.attributes.colors?.data[activeColor]?.attributes.name} -
               Size {activeSize}
             </p>
             <p className="text-sm text-gray-600">${product.attributes.price}</p>
           </div>
+          <div className="absolute top-1 right-1">
+            <button onClick={() => toast.dismiss(t)}>
+              <X size={16} />
+            </button>
+          </div>
         </div>
-      );
+      ));
     } else {
       toast.error("Please select a size");
     }
@@ -98,6 +107,7 @@ export default function SellProductCard({data}: SellProductCardProps) {
                     .url || "/placeholder.svg"
                 }
                 alt={product.attributes.name}
+                onClick={() => console.log("AA")}
               />
               <button className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors">
                 <Heart className="w-6 h-6 text-red-500" />
@@ -206,7 +216,7 @@ export default function SellProductCard({data}: SellProductCardProps) {
           )}
         </div>
       </div>
-      <Toaster richColors position="top-right" />
+      <Toaster richColors position="top-right" expand={true} />
     </div>
   );
 }
