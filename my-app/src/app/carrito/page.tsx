@@ -41,7 +41,14 @@ const CarritoPage: React.FC = () => {
         </CardContent>
         <CardFooter className="flex justify-between items-center">
           <div className="text-xl font-semibold">
-            Total: <span className="text-primary">${total.toFixed(2)}</span>
+            Total:{" "}
+            <span className="text-primary">
+              {" "}
+              {new Intl.NumberFormat("es-CO", {
+                style: "currency",
+                currency: "COP",
+              }).format(Number(total))}
+            </span>
           </div>
           <Button size="lg" disabled={cartProducts.length === 0}>
             Proceder al Pago

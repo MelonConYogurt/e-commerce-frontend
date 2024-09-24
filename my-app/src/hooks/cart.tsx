@@ -7,6 +7,7 @@ interface Product {
   quantity: number;
   size: number;
   media: string;
+  color?: string;
 }
 
 interface CartState {

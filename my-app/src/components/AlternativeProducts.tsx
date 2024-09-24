@@ -72,16 +72,17 @@ function ProductCardItem({product}: ProductCardItemProps) {
               <h3 className="font-semibold mb-2">Available Sizes:</h3>
               <div className="flex flex-wrap gap-2">
                 {product.attributes.sizes.data.map((sizeData) => (
-                  <div
+                  <button
                     key={sizeData.size}
                     className={`px-3 py-1 border border-gray-300 rounded-md ${
                       sizeData.stock <= 0
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                         : ""
                     }`}
+                    disabled={sizeData.stock <= 0}
                   >
                     {sizeData.size}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -89,15 +90,16 @@ function ProductCardItem({product}: ProductCardItemProps) {
 
         {product.attributes.categories &&
           product.attributes.categories.data.length > 0 && (
-            <div className="mb-4">
-              <h3 className="font-semibold mb-2">Categories:</h3>
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Categories:</h3>
               <div className="flex flex-wrap gap-2">
                 {product.attributes.categories.data.map((category) => (
                   <span
                     key={category.id}
-                    className="bg-blue-100 p-2 borderborder-gray-300 rounded-md text-sm"
+                    className="bg-gray-200 px-3 py-1 rounded-full text-sm text-gray-700"
                   >
-                    {category.attributes.name}
+                    {category.attributes.name.charAt(0).toUpperCase() +
+                      category.attributes.name.slice(1)}
                   </span>
                 ))}
               </div>
