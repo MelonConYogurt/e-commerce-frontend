@@ -1,12 +1,33 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, {useEffect, useState} from "react";
-import {useCartStore} from "@/hooks/cart";
+import Example from "@/components/Image";
+import {useState} from "react";
 
-const FavoritosPage: React.FC = () => {
-  const {favoriteProducts} = useCartStore();
+function ImgPreview() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [src, setSrc] = useState("");
 
-  return <div></div>;
-};
+  function handleClick(imgSrc: string) {
+    setIsOpen(true);
+    setSrc(imgSrc);
+  }
 
-export default FavoritosPage;
+  function handleClose() {
+    setIsOpen(false);
+  }
+
+  return (
+    <div className="flex justify-center items-center p-20 m-20 cursor-pointer">
+      <img
+        src="/images/Portada1.jpg"
+        alt=""
+        className="w-96"
+        onClick={() => handleClick("/images/Portada1.jpg")}
+      />
+      <Example src={src} isOpen={isOpen} onClose={handleClose} />
+    </div>
+  );
+}
+
+export default ImgPreview;

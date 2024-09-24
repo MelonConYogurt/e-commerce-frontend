@@ -82,10 +82,16 @@ export default function RootLayout({
                     <span className="sr-only">Carrito</span>
                   </Button>
                 </Link>
-                <Button variant="ghost" size="icon" className="hidden md:flex">
-                  <Heart className="h-5 w-5" />
-                  <span className="sr-only">Favoritos</span>
-                </Button>
+                <Link legacyBehavior href="/favoritos">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hidden md:flex"
+                  >
+                    <Heart className="h-5 w-5" />
+                    <span className="sr-only">Favoritos</span>
+                  </Button>
+                </Link>
                 <Button variant="outline" size="icon" className="md:hidden">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Menu</span>
