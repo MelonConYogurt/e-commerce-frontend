@@ -13,7 +13,7 @@ import {
 import {Button} from "@/components/ui/button";
 
 const CarritoPage: React.FC = () => {
-  const {cartProducts} = useCartStore();
+  const {cartProducts, deleteAll} = useCartStore();
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -25,11 +25,11 @@ const CarritoPage: React.FC = () => {
   }, [cartProducts]);
 
   return (
-    <div className="container mx-auto py-8">
-      <Card>
+    <div className="container  relative">
+      <Card className="rounded-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">
-            Tu Carrito de Compras
+            Your Shopping Cart
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -51,10 +51,19 @@ const CarritoPage: React.FC = () => {
             </span>
           </div>
           <Button size="lg" disabled={cartProducts.length === 0}>
-            Proceder al Pago
+            Complete purchase
           </Button>
         </CardFooter>
       </Card>
+
+      <Button
+        size="lg"
+        disabled={cartProducts.length === 0}
+        className="absolute top-2 right-2"
+        onClick={() => deleteAll()}
+      >
+        Delete all
+      </Button>
     </div>
   );
 };

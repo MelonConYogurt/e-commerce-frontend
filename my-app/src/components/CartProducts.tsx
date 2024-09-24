@@ -2,26 +2,19 @@
 import {Card, CardContent} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {Minus, Plus, Trash2} from "lucide-react";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  size: number;
-  color: string;
-  media: string;
-}
+import {Product} from "@/hooks/cart";
+import {useCartStore} from "@/hooks/cart";
 
 interface CartProps {
   data: Product[];
 }
 
 export default function CartProducts({data}: CartProps) {
+  const {deleteById, increment, decreased} = useCartStore();
   return (
     <div className="space-y-4  ">
       {data.map((product) => (
-        <Card key={product.id} className="overflow-hidden relative">
+        <Card key={product.id} className="overflow-hidden relative rounded-lg">
           <CardContent className="p-0">
             <div className="flex items-center rounded-lg">
               <img
@@ -45,11 +38,21 @@ export default function CartProducts({data}: CartProps) {
 
                 <div className="flex items-center justify-between mt-2">
                   <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="icon">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => decreased(product.id)}
+                      disabled={product.quantity === 0}
+                    >
                       <Minus className="h-4 w-4" />
                     </Button>
                     <span className="font-medium">{product.quantity}</span>
-                    <Button variant="outline" size="icon">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => increment(product.id)}
+                      disabled={product.quantity === product.maxStock}
+                    >
                       <Plus className="h-4 w-4" />
                     </Button>
                   </div>
@@ -68,6 +71,7 @@ export default function CartProducts({data}: CartProps) {
                 variant="ghost"
                 size="icon"
                 className=" absolute top-1 right-1"
+                onClick={() => deleteById(product.id)}
               >
                 <Trash2 className="h-5 w-5 text-red-500" />
               </Button>

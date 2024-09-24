@@ -19,18 +19,24 @@ export default function SellProductCard({data}: SellProductCardProps) {
 
   const handleAddToCart = (product: Product) => {
     if (activeSize !== null) {
+      const sizeStock = product.attributes.sizes.data.filter(
+        (size) => size.size === activeSize
+      );
+
       const productToAdd = {
         id: product.id,
         name: product.attributes.name,
         price: Number(product.attributes.price),
         quantity: 1,
         size: activeSize,
+        maxStock: sizeStock[0].stock,
         color: product.attributes.colors?.data[activeColor]?.attributes.name,
         media:
           product.attributes.media.data[0].attributes.formats.small?.url ||
           "/placeholder.svg",
       };
       addToCart(productToAdd);
+      console.log(productToAdd);
       toast(
         <div className="flex items-center gap-4">
           <img
