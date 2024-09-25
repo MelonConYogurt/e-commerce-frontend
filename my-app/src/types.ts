@@ -9,7 +9,7 @@ export interface Product {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    discount?: string;
+    discount: string;
     sizes: {
       data: {
         size: number;

@@ -1,14 +1,13 @@
 "use client";
 
 import {useEffect, useState} from "react";
-import GetProductsFilter from "@/utils/DinamicFilter";
-import ProductCard from "@/components/AlternativeProducts";
+import GetAllProducts from "@/utils/getAllProducts";
+import ProductCard from "@/components/ProductosOferta";
 import Transition from "@/components/Transition";
 
-async function fetchData(name: string) {
+async function fetchData() {
   try {
-    const filter = `filters[categories][name][$eq]=${name}&`;
-    const response = await GetProductsFilter(1000, filter);
+    const response = await GetAllProducts(1000);
     return response || [];
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -16,16 +15,16 @@ async function fetchData(name: string) {
   }
 }
 
-export default function CategoryProducts({params}: {params: {name: string}}) {
+export default function OfertasPage() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    async function loadData() {
-      const fetchedData = await fetchData(params.name);
-      setData(fetchedData);
+    async function loadProducts() {
+      const products = await fetchData();
+      setData(products);
     }
-    loadData();
-  }, [params.name]);
+    loadProducts();
+  }, []);
 
   return (
     <Transition>

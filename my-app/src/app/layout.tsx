@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import Link from "next/link";
 import Transition from "@/components/Transition";
 import CategoriasMenu from "@/components/CategoriasMenu";
-import {Heart, ShoppingCart, Menu} from "lucide-react";
+import {Heart, Menu} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import type {Metadata} from "next";
 import CartButton from "@/components/CartButton";
