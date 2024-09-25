@@ -26,6 +26,8 @@ interface CartState {
   addToFavorite: (product: ProductFav) => void;
   deleteAll: () => void;
   deleteById: (id: number) => void;
+  deleteAllFav: () => void;
+  deleteByIdFav: (id: number) => void;
   increment: (id: number) => void;
   decreased: (id: number) => void;
 }
@@ -89,6 +91,18 @@ export const useCartStore = create<CartState>((set) => ({
   deleteById: (id) =>
     set((state) => ({
       cartProducts: state.cartProducts.filter((product) => product.id !== id),
+    })),
+
+  deleteAllFav: () =>
+    set(() => ({
+      favoriteProducts: [],
+    })),
+
+  deleteByIdFav: (id) =>
+    set((state) => ({
+      favoriteProducts: state.cartProducts.filter(
+        (product) => product.id !== id
+      ),
     })),
 
   increment: (id) =>
