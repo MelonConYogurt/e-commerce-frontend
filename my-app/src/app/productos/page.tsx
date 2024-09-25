@@ -14,6 +14,12 @@ import GetProductsFilter from "@/utils/DinamicFilter";
 import Transition from "@/components/Transition";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Product, Category, FilterCategory} from "../../types";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {ChevronsUpDown, ChevronDown} from "lucide-react";
 
 export default function Home() {
   const [priceRange, setPriceRange] = useState({min: "", max: ""});
@@ -131,112 +137,139 @@ export default function Home() {
       <div className="flex flex-col md:flex-row gap-8 m-10">
         <Card className="w-full md:w-64 h-fit">
           <CardHeader>
-            <CardTitle className="self-center">Filtros</CardTitle>
-            <Separator />
+            <CardTitle className="mb-10 text-center">Filtros</CardTitle>
+            <Collapsible>
+              <CardContent className="flex flex-col gap-6">
+                <Collapsible>
+                  <CollapsibleTrigger className="flex items-center justify-between w-full">
+                    <h3 className="font-semibold">Categorias</h3>
+                    <ChevronDown className="h-4 w-4" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 mt-2">
+                    {categoryValues.map((element, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <input
+                          className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          type="checkbox"
+                          id={`categoria-${index}`}
+                          checked={element.value}
+                          onChange={(e) =>
+                            handleInputChangesCategories(
+                              element.name,
+                              e.target.checked
+                            )
+                          }
+                        />
+                        <Label htmlFor={`categoria-${index}`}>
+                          {element.name.charAt(0).toUpperCase() +
+                            element.name.slice(1)}
+                        </Label>
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+                <Separator />
+                <Collapsible>
+                  <CollapsibleTrigger className="flex items-center justify-between w-full">
+                    <h3 className="font-semibold">Tags</h3>
+                    <ChevronDown className="h-4 w-4" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 mt-2">
+                    {tagsValues.map((element, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <input
+                          className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          type="checkbox"
+                          id={`tag-${index}`}
+                          checked={element.value}
+                          onChange={(e) =>
+                            handleInputChangesTags(
+                              element.name,
+                              e.target.checked
+                            )
+                          }
+                        />
+                        <Label htmlFor={`tag-${index}`}>
+                          {element.name.charAt(0).toUpperCase() +
+                            element.name.slice(1)}
+                        </Label>
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+                <Separator />
+                <Collapsible>
+                  <CollapsibleTrigger className="flex items-center justify-between w-full">
+                    <h3 className="font-semibold">Colors</h3>
+                    <ChevronDown className="h-4 w-4" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 mt-2">
+                    {colorsValues.map((element, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-row items-center space-x-2 w-full"
+                      >
+                        <input
+                          className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          type="checkbox"
+                          id={`color-${index}`}
+                          checked={element.value}
+                          onChange={(e) =>
+                            handleInputChangesColors(
+                              element.name,
+                              e.target.checked
+                            )
+                          }
+                        />
+                        <div
+                          className={`w-6 h-6 rounded-full border border-white-300`}
+                          style={{backgroundColor: element.name}}
+                        ></div>
+                        <Label
+                          htmlFor={`color-${index}`}
+                          className={`text-sm font-medium text-${element.name}-700 dark:text-${element.name}-300`}
+                        >
+                          {element.name.charAt(0).toUpperCase() +
+                            element.name.slice(1)}
+                        </Label>
+                      </div>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
+                <Separator />
+                <Collapsible>
+                  <CollapsibleTrigger className="flex items-center justify-between w-full">
+                    <h3 className="font-semibold">Rango de precio</h3>
+                    <ChevronDown className="h-4 w-4" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 mt-2">
+                    <Input
+                      type="number"
+                      placeholder="Desde: 0"
+                      value={priceRange.min}
+                      onChange={(e) =>
+                        setPriceRange((prev) => ({
+                          ...prev,
+                          min: e.target.value,
+                        }))
+                      }
+                    />
+                    <Input
+                      type="number"
+                      placeholder="Hasta: 0"
+                      value={priceRange.max}
+                      onChange={(e) =>
+                        setPriceRange((prev) => ({
+                          ...prev,
+                          max: e.target.value,
+                        }))
+                      }
+                    />
+                  </CollapsibleContent>
+                </Collapsible>
+              </CardContent>
+            </Collapsible>
           </CardHeader>
-          <CardContent className="flex flex-col gap-6">
-            <div className="space-y-4">
-              <h3 className="font-semibold">Categorias</h3>
-              {categoryValues.map((element, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <input
-                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    type="checkbox"
-                    id={`categoria-${index}`}
-                    checked={element.value}
-                    onChange={(e) =>
-                      handleInputChangesCategories(
-                        element.name,
-                        e.target.checked
-                      )
-                    }
-                  />
-                  <Label htmlFor={`categoria-${index}`}>
-                    {element.name.charAt(0).toUpperCase() +
-                      element.name.slice(1)}
-                  </Label>
-                </div>
-              ))}
-            </div>
-            <Separator />
-            <div className="space-y-4">
-              <h3 className="font-semibold">Tags</h3>
-              {tagsValues.map((element, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <input
-                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    type="checkbox"
-                    id={`tag-${index}`}
-                    checked={element.value}
-                    onChange={(e) =>
-                      handleInputChangesTags(element.name, e.target.checked)
-                    }
-                  />
-                  <Label htmlFor={`tag-${index}`}>
-                    {element.name.charAt(0).toUpperCase() +
-                      element.name.slice(1)}
-                  </Label>
-                </div>
-              ))}
-            </div>
-            <Separator />
-            <div className="space-y-4">
-              <h3 className="font-semibold">Colors</h3>
-              {colorsValues.map((element, index) => (
-                <div
-                  key={index}
-                  className="flex flex-row items-center space-x-2 w-full"
-                >
-                  <input
-                    className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    type="checkbox"
-                    id={`tag-${index}`}
-                    checked={element.value}
-                    onChange={(e) =>
-                      handleInputChangesColors(element.name, e.target.checked)
-                    }
-                  />
-                  <div
-                    className={`w-6 h-6 rounded-full border border-white-300`}
-                    style={{backgroundColor: element.name}}
-                  ></div>
-                  <Label
-                    htmlFor={`tag-${index}`}
-                    className={`text-sm font-medium text-${element.name}-700 dark:text-${element.name}-300`}
-                  >
-                    {element.name.charAt(0).toUpperCase() +
-                      element.name.slice(1)}
-                  </Label>
-                </div>
-              ))}
-            </div>
-            <Separator />
-            <div className="space-y-4">
-              <h3 className="font-semibold">Rango de precio</h3>
-              <Input
-                type="number"
-                placeholder="Desde: 0"
-                value={priceRange.min}
-                onChange={(e) =>
-                  setPriceRange((prev) => ({
-                    ...prev,
-                    min: e.target.value,
-                  }))
-                }
-              />
-              <Input
-                type="number"
-                placeholder="Hasta: 0"
-                value={priceRange.max}
-                onChange={(e) =>
-                  setPriceRange((prev) => ({
-                    ...prev,
-                    max: e.target.value,
-                  }))
-                }
-              />
-            </div>
-          </CardContent>
         </Card>
         <div className="flex-1 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
           {isLoading ? (

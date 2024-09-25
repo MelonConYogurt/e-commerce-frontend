@@ -37,7 +37,7 @@ function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="relative">
         <img
-          className="w-full h-96 object-cover"
+          className="w-full h-96 object-scale-down"
           src={
             product.attributes.media?.data?.[activeImageIndex]?.attributes
               ?.formats?.large?.url || "/placeholder.svg"

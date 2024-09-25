@@ -17,7 +17,7 @@ const FavoritesPage: React.FC = () => {
             <CardTitle className="text-2xl font-bold">Your Favorites</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-5 mx-5 justify-center items-center">
+            <div className="flex flex-wrap gap-5  justify-center items-center">
               {favoriteProducts.length > 0 ? (
                 <FavoriteProducts data={favoriteProducts} />
               ) : (
