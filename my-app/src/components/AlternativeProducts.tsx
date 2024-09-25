@@ -19,12 +19,16 @@ interface ProductCardItemProps {
 function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const {addToFavorite} = useCartStore();
+  const discountPercentage = Number(product.attributes.discount);
+  const originalPrice = Number(product.attributes.price);
+  const discountedPrice =
+    originalPrice - (discountPercentage / 100) * originalPrice;
 
   const handleAddToFav = (product: Product) => {
     const productToAdd = {
       id: product.id,
       name: product.attributes.name,
-      price: Number(product.attributes.price),
+      price: discountedPrice,
       media:
         product.attributes.media.data[0].attributes.formats.small?.url ||
         "/placeholder.svg",
@@ -44,27 +48,51 @@ function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
           }
           alt={product.attributes.name}
         />
-        <button className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md">
-          <Heart
-            className="w-6 h-6 text-red-500"
-            onClick={() => handleAddToFav(product)}
-          />
+        <button
+          className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:scale-110 active:scale-90 transition-transform duration-200"
+          onClick={() => handleAddToFav(product)}
+        >
+          <Heart className="w-6 h-6 text-red-500" />
         </button>
+        {discountPercentage > 0 && (
+          <div className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-md font-bold">
+            {discountPercentage}% OFF
+          </div>
+        )}
       </div>
 
       <div className="p-6">
-        <div className="flex  flex-col justify-between items-start mb-4">
+        <div className="flex flex-col justify-between items-start mb-4">
           <h2 className="text-2xl font-bold text-gray-800">
             <Link href={`productos/${product.attributes.slug}`}>
               {product.attributes.name}
             </Link>
           </h2>
-          <span className="text-xl mt-1 font-bold text-blue-400">
-            {new Intl.NumberFormat("es-CO", {
-              style: "currency",
-              currency: "COP",
-            }).format(Number(product.attributes.price))}
-          </span>
+          <div className="mt-2 flex items-baseline gap-2">
+            {discountPercentage > 0 ? (
+              <>
+                <span className="text-2xl font-bold text-blue-600">
+                  {new Intl.NumberFormat("es-CO", {
+                    style: "currency",
+                    currency: "COP",
+                  }).format(discountedPrice)}
+                </span>
+                <span className="text-lg text-gray-500 line-through">
+                  {new Intl.NumberFormat("es-CO", {
+                    style: "currency",
+                    currency: "COP",
+                  }).format(originalPrice)}
+                </span>
+              </>
+            ) : (
+              <span className="text-2xl font-bold text-blue-600">
+                {new Intl.NumberFormat("es-CO", {
+                  style: "currency",
+                  currency: "COP",
+                }).format(originalPrice)}
+              </span>
+            )}
+          </div>
         </div>
 
         <p className="text-gray-600 mb-4">{product.attributes.introduction}</p>

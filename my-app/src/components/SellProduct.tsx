@@ -30,7 +30,13 @@ export default function SellProductCard({data}: SellProductCardProps) {
     setIsOpen(false);
   }
 
-  const handleAddToCart = (product: Product) => {
+  function calculateDiscountedPrice(product: Product) {
+    const originalPrice = Number(product.attributes.price);
+    const discountPercentage = Number(product.attributes.discount);
+    return originalPrice - (discountPercentage / 100) * originalPrice;
+  }
+
+  const handleAddToCart = (product: Product, price: number) => {
     if (activeSize !== null) {
       const sizeStock = product.attributes.sizes.data.filter(
         (size) => size.size === activeSize
@@ -39,11 +45,11 @@ export default function SellProductCard({data}: SellProductCardProps) {
       const productToAdd = {
         id: product.id,
         name: product.attributes.name,
-        price: Number(product.attributes.price),
+        price: price,
         quantity: 1,
         size: activeSize,
         maxStock: sizeStock[0].stock,
-        color: product.attributes.colors?.data[activeColor]?.attributes.name,
+        color: product.attributes.colors.data[activeColor].attributes.name,
         media:
           product.attributes.media.data[0].attributes.formats.small?.url ||
           "/placeholder.svg",
@@ -69,7 +75,7 @@ export default function SellProductCard({data}: SellProductCardProps) {
               {product.attributes.colors?.data[activeColor]?.attributes.name} -
               Size {activeSize}
             </p>
-            <p className="text-sm text-gray-600">${product.attributes.price}</p>
+            <p className="text-sm text-gray-600">${price}</p>
           </div>
           <div className="absolute top-1 right-1">
             <button onClick={() => toast.dismiss(t)}>
@@ -88,6 +94,11 @@ export default function SellProductCard({data}: SellProductCardProps) {
   }
 
   const product = data[0];
+
+  const discountPercentage = Number(product.attributes.discount);
+  const originalPrice = Number(product.attributes.price);
+  const discountedPrice =
+    originalPrice - (discountPercentage / 100) * originalPrice;
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -137,9 +148,31 @@ export default function SellProductCard({data}: SellProductCardProps) {
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
             {product.attributes.name}
           </h2>
-          <span className="text-2xl font-semibold text-green-600 mb-4 block">
-            ${product.attributes.price}
-          </span>
+          <div className="mt-2 flex items-baseline gap-2">
+            {discountPercentage > 0 ? (
+              <>
+                <span className="text-2xl font-bold text-blue-600">
+                  {new Intl.NumberFormat("es-CO", {
+                    style: "currency",
+                    currency: "COP",
+                  }).format(discountedPrice)}
+                </span>
+                <span className="text-lg text-gray-500 line-through">
+                  {new Intl.NumberFormat("es-CO", {
+                    style: "currency",
+                    currency: "COP",
+                  }).format(originalPrice)}
+                </span>
+              </>
+            ) : (
+              <span className="text-2xl font-bold text-blue-600">
+                {new Intl.NumberFormat("es-CO", {
+                  style: "currency",
+                  currency: "COP",
+                }).format(originalPrice)}
+              </span>
+            )}
+          </div>
 
           <p className="text-gray-600 mb-6">{product.attributes.description}</p>
 
@@ -218,7 +251,9 @@ export default function SellProductCard({data}: SellProductCardProps) {
 
           <button
             className="flex items-center justify-center w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors"
-            onClick={() => handleAddToCart(product)}
+            onClick={() =>
+              handleAddToCart(product, calculateDiscountedPrice(product))
+            }
           >
             <ShoppingCart className="w-5 h-5 mr-2" />
             Add to Cart

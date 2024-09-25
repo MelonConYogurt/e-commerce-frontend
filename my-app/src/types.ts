@@ -35,7 +35,7 @@ export interface Product {
         };
       }[];
     };
-    colors?: {
+    colors: {
       data: {
         id: number;
         attributes: {
