@@ -4,7 +4,9 @@
 import {useState} from "react";
 import {Heart} from "lucide-react";
 import {Product} from "../types";
+import {useCartStore} from "@/hooks/cart";
 import Link from "next/link";
+import {toast, Toaster} from "sonner";
 
 interface ProductCardProps {
   data: Product[];
@@ -14,8 +16,22 @@ interface ProductCardItemProps {
   product: Product;
 }
 
-function ProductCardItem({product}: ProductCardItemProps) {
+function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const {addToFavorite} = useCartStore();
+
+  const handleAddToFav = (product: Product) => {
+    const productToAdd = {
+      id: product.id,
+      name: product.attributes.name,
+      price: Number(product.attributes.price),
+      media:
+        product.attributes.media.data[0].attributes.formats.small?.url ||
+        "/placeholder.svg",
+    };
+    addToFavorite(productToAdd);
+    toast.success("Se ha agregado el producto a tus favoritos");
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -29,7 +45,10 @@ function ProductCardItem({product}: ProductCardItemProps) {
           alt={product.attributes.name}
         />
         <button className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md">
-          <Heart className="w-6 h-6 text-red-500" />
+          <Heart
+            className="w-6 h-6 text-red-500"
+            onClick={() => handleAddToFav(product)}
+          />
         </button>
       </div>
 
@@ -128,6 +147,7 @@ function ProductCardItem({product}: ProductCardItemProps) {
           </div>
         </div>
       )}
+      <Toaster richColors position="top-right" expand={true} />
     </div>
   );
 }

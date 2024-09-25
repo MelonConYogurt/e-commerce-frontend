@@ -1,33 +1,42 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import Example from "@/components/Image";
-import {useState} from "react";
+import React from "react";
+import {useCartStore} from "@/hooks/cart";
+import FavoriteProducts from "@/components/FavoriteProducts";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
 
-function ImgPreview() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [src, setSrc] = useState("");
-
-  function handleClick(imgSrc: string) {
-    setIsOpen(true);
-    setSrc(imgSrc);
-  }
-
-  function handleClose() {
-    setIsOpen(false);
-  }
+const FavoritesPage: React.FC = () => {
+  const {favoriteProducts, deleteAll} = useCartStore();
 
   return (
-    <div className="flex justify-center items-center p-20 m-20 cursor-pointer">
-      <img
-        src="/images/Portada1.jpg"
-        alt=""
-        className="w-96"
-        onClick={() => handleClick("/images/Portada1.jpg")}
-      />
-      <Example src={src} isOpen={isOpen} onClose={handleClose} />
+    <div className="flex items-center justify-center my-20">
+      <div className="container relative">
+        <Card className="rounded-lg">
+          <CardHeader className="flex justify-between items-center">
+            <CardTitle className="text-2xl font-bold">Your Favorites</CardTitle>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={deleteAll}
+              disabled={favoriteProducts.length === 0}
+            >
+              Clear All Favorites
+            </Button>
+          </CardHeader>
+          <CardContent>
+            {favoriteProducts.length > 0 ? (
+              <FavoriteProducts data={favoriteProducts} />
+            ) : (
+              <p className="text-center text-gray-500">
+                You don&apos;t have any favorite products yet
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
-}
+};
 
-export default ImgPreview;
+export default FavoritesPage;

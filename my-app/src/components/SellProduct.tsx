@@ -7,6 +7,7 @@ import {useCartStore} from "@/hooks/cart";
 import {Product} from "@/types";
 import {toast, Toaster} from "sonner";
 import Link from "next/link";
+import Example from "@/components/Image";
 
 interface SellProductCardProps {
   data: Product[];
@@ -16,7 +17,18 @@ export default function SellProductCard({data}: SellProductCardProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeSize, setActiveSize] = useState<number | null>(null);
   const [activeColor, setActiveColor] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [src, setSrc] = useState("");
   const addToCart = useCartStore((state) => state.addToCart);
+
+  function handleClick(imgSrc: string) {
+    setIsOpen(true);
+    setSrc(imgSrc);
+  }
+
+  function handleClose() {
+    setIsOpen(false);
+  }
 
   const handleAddToCart = (product: Product) => {
     if (activeSize !== null) {
@@ -99,16 +111,22 @@ export default function SellProductCard({data}: SellProductCardProps) {
                 </button>
               ))}
             </div>
-            <div className="relative flex-grow">
+            <div className="relative w-fit h-fit flex-grow  flex justify-center items-center">
               <img
-                className="w-full h-auto object-cover rounded-lg"
+                className="w-4/5 h-4/5 object-cover rounded-lg cursor-pointer"
                 src={
                   product.attributes.media.data[activeImageIndex].attributes
                     .url || "/placeholder.svg"
                 }
                 alt={product.attributes.name}
-                onClick={() => console.log("AA")}
+                onClick={() =>
+                  handleClick(
+                    product.attributes.media.data[activeImageIndex].attributes
+                      .url || "/placeholder.svg"
+                  )
+                }
               />
+              <Example src={src} isOpen={isOpen} onClose={handleClose} />
               <button className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors">
                 <Heart className="w-6 h-6 text-red-500" />
               </button>

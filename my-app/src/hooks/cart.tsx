@@ -12,11 +12,18 @@ export interface Product {
   color?: string;
 }
 
+export interface ProductFav {
+  id: number;
+  name: string;
+  price: number;
+  media: string;
+}
+
 interface CartState {
   cartProducts: Product[];
-  favoriteProducts: Product[];
+  favoriteProducts: ProductFav[];
   addToCart: (product: Product) => void;
-  addToFavorite: (product: Product) => void;
+  addToFavorite: (product: ProductFav) => void;
   deleteAll: () => void;
   deleteById: (id: number) => void;
   increment: (id: number) => void;

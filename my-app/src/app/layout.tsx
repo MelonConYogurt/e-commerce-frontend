@@ -1,11 +1,11 @@
-import type {Metadata} from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import {Heart, ShoppingCart, Menu} from "lucide-react";
+import localFont from "next/font/local";
 import Link from "next/link";
 import Transition from "@/components/Transition";
-import {Button} from "@/components/ui/button";
 import CategoriasMenu from "@/components/CategoriasMenu";
+import {Heart, ShoppingCart, Menu} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import type {Metadata} from "next";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,14 +35,8 @@ export default function RootLayout({
       >
         <Transition>
           <header className="sticky top-0 z-50 w-full border-b bg-gradient-to-t bg-slate-50">
-            <nav className="flex h-16 items-center justify-between mx-3">
-              <div className="flex items-center gap-2">
-                <div className="rounded-full w-10 h-10 border bg-primary flex items-center justify-center text-primary-foreground font-bold">
-                  A
-                </div>
-                <span className="font-semibold">e-commerce</span>
-              </div>
-              <ul className="flex flex-row justify-center items-center md:flex space-x-6">
+            <nav className="flex h-16 mx-3">
+              <ul className="flex flex-row justify-center items-center space-x-6 flex-grow ">
                 <li>
                   <Link
                     href="/"
@@ -71,7 +65,7 @@ export default function RootLayout({
                   </Link>
                 </li>
               </ul>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center gap-4">
                 <Link legacyBehavior href="/carrito">
                   <Button
                     variant="ghost"
