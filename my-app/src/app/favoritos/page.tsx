@@ -5,37 +5,55 @@ import {useCartStore} from "@/hooks/cart";
 import FavoriteProducts from "@/components/FavoriteProducts";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
+import {Trash2} from "lucide-react";
 
 const FavoritesPage: React.FC = () => {
   const {favoriteProducts, deleteAllFav} = useCartStore();
 
   return (
-    <div className="flex items-center justify-center my-20">
-      <div className="container relative">
-        <Card className="rounded-lg">
-          <CardHeader className="flex justify-between items-center">
-            <CardTitle className="text-2xl font-bold">Your Favorites</CardTitle>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Your Favorites</h1>
+      <div className="grid gap-8 md:grid-cols-3">
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold">
+              Favorite Items
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-5  justify-center items-center">
-              {favoriteProducts.length > 0 ? (
-                <FavoriteProducts data={favoriteProducts} />
-              ) : (
-                <p className="text-center text-gray-500">
-                  You don&apos;t have any favorite products yet
-                </p>
-              )}
-            </div>
+          <CardContent className="flex flex-col justify-center items-center gap-5">
+            {favoriteProducts.length > 0 ? (
+              <FavoriteProducts data={favoriteProducts} />
+            ) : (
+              <p className="text-center text-gray-500 py-8">
+                You don&apos;t have any favorite products yet
+              </p>
+            )}
           </CardContent>
         </Card>
-        <Button
-          className="absolute top-2 right-2"
-          size="lg"
-          onClick={deleteAllFav}
-          disabled={favoriteProducts.length === 0}
-        >
-          Clear All Favorites
-        </Button>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold">
+                Favorites Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between items-center text-lg font-medium mb-4">
+                <span>Total Favorites:</span>
+                <span className="text-primary">{favoriteProducts.length}</span>
+              </div>
+              <Button
+                size="lg"
+                className="w-full"
+                disabled={favoriteProducts.length === 0}
+                onClick={() => deleteAllFav()}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Clear All Favorites
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

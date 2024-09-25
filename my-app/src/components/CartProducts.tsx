@@ -41,7 +41,9 @@ export default function CartProducts({data}: CartProps) {
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => decreased(product.id)}
+                      onClick={() =>
+                        decreased(product.id, product.size, product.color)
+                      }
                       disabled={product.quantity === 0}
                     >
                       <Minus className="h-4 w-4" />
@@ -50,7 +52,9 @@ export default function CartProducts({data}: CartProps) {
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => increment(product.id)}
+                      onClick={() =>
+                        increment(product.id, product.size, product.color)
+                      }
                       disabled={product.quantity === product.maxStock}
                     >
                       <Plus className="h-4 w-4" />
@@ -71,7 +75,9 @@ export default function CartProducts({data}: CartProps) {
                 variant="ghost"
                 size="icon"
                 className=" absolute top-1 right-1"
-                onClick={() => deleteById(product.id)}
+                onClick={() =>
+                  deleteById(product.id, product.size, product.color)
+                }
               >
                 <Trash2 className="h-5 w-5 text-red-500" />
               </Button>

@@ -17,19 +17,17 @@ export default function FavoriteProducts({data}: FavoriteProps) {
   return (
     <>
       {data.map((product) => (
-        <Card key={product.id} className="relative w-fit h-fit">
-          <CardContent className="flex gap-5  justify-center items-center">
-            <div className="relative">
-              <img
-                src={product.media}
-                alt={product.name}
-                className="w-full h-48 object-cover m-5 rounded-lg"
-              />
-            </div>
-            <div className="p-4">
-              <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
+        <Card key={product.id} className="relative w-[600px] h-50 rounded-lg ">
+          <CardContent className="flex flex-col justify-center items-center gap-5 p-0 m-0">
+            <img
+              src={product.media}
+              alt={product.name}
+              className="w-full h-48 object-scale-down rounded-lg"
+            />
+            <div className="">
+              <h2 className="text-lg font-semibold">{product.name}</h2>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center mb-4">
                 <p className="font-semibold">
                   {new Intl.NumberFormat("es-CO", {
                     style: "currency",

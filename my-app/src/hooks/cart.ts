@@ -9,7 +9,7 @@ export interface Product {
   maxStock: number;
   size: number;
   media: string;
-  color?: string;
+  color: string;
 }
 
 export interface ProductFav {
@@ -25,11 +25,11 @@ interface CartState {
   addToCart: (product: Product) => void;
   addToFavorite: (product: ProductFav) => void;
   deleteAll: () => void;
-  deleteById: (id: number) => void;
+  deleteById: (id: number, size: number, color: string) => void;
   deleteAllFav: () => void;
   deleteByIdFav: (id: number) => void;
-  increment: (id: number) => void;
-  decreased: (id: number) => void;
+  increment: (id: number, size: number, color: string) => void;
+  decreased: (id: number, size: number, color: string) => void;
 }
 
 export const useCartStore = create<CartState>((set) => ({
@@ -39,13 +39,20 @@ export const useCartStore = create<CartState>((set) => ({
   addToCart: (newProduct) =>
     set((state) => {
       const productAlreadyInCart = state.cartProducts.find(
-        (product) => product.id === newProduct.id
+        (product) =>
+          product.id === newProduct.id &&
+          product.size === newProduct.size &&
+          product.color === newProduct.color
       );
 
       if (productAlreadyInCart) {
         return {
           cartProducts: state.cartProducts.map((product) => {
-            if (product.id === newProduct.id) {
+            if (
+              product.id === newProduct.id &&
+              product.size === newProduct.size &&
+              product.color === newProduct.color
+            ) {
               if (product.quantity < product.maxStock) {
                 return {...product, quantity: product.quantity + 1};
               } else {
@@ -88,9 +95,16 @@ export const useCartStore = create<CartState>((set) => ({
       cartProducts: [],
     })),
 
-  deleteById: (id) =>
+  deleteById: (id, size, color) =>
     set((state) => ({
-      cartProducts: state.cartProducts.filter((product) => product.id !== id),
+      cartProducts: state.cartProducts.filter(
+        (product) =>
+          !(
+            product.id === id &&
+            product.size === size &&
+            product.color === color
+          )
+      ),
     })),
 
   deleteAllFav: () =>
@@ -105,20 +119,28 @@ export const useCartStore = create<CartState>((set) => ({
       ),
     })),
 
-  increment: (id) =>
+  increment: (id, size, color) =>
     set((state) => ({
       cartProducts: state.cartProducts.map((product) => {
-        if (product.id === id) {
+        if (
+          product.id === id &&
+          product.size === size &&
+          product.color === color
+        ) {
           return {...product, quantity: product.quantity + 1};
         }
         return product;
       }),
     })),
 
-  decreased: (id) =>
+  decreased: (id, size, color) =>
     set((state) => ({
       cartProducts: state.cartProducts.map((product) => {
-        if (product.id === id) {
+        if (
+          product.id === id &&
+          product.size === size &&
+          product.color === color
+        ) {
           return {...product, quantity: product.quantity - 1};
         }
         return product;

@@ -3,14 +3,9 @@
 import React, {useEffect, useState} from "react";
 import {useCartStore} from "@/hooks/cart";
 import CartProducts from "@/components/CartProducts";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
+import {Trash2} from "lucide-react";
 
 const CarritoPage: React.FC = () => {
   const {cartProducts, deleteAll} = useCartStore();
@@ -25,46 +20,60 @@ const CarritoPage: React.FC = () => {
   }, [cartProducts]);
 
   return (
-    <div className="flex items-center justify-center my-20">
-      <div className="container  relative">
-        <Card className="rounded-lg">
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>
+      <div className="grid gap-8 md:grid-cols-3">
+        <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">
-              Your Shopping Cart
-            </CardTitle>
+            <CardTitle className="text-xl font-semibold">Cart Items</CardTitle>
           </CardHeader>
           <CardContent>
             {cartProducts.length > 0 ? (
               <CartProducts data={cartProducts} />
             ) : (
-              <p className="text-center text-gray-500">Tu carrito está vacío</p>
+              <p className="text-center text-gray-500 py-8">
+                Your cart is empty
+              </p>
             )}
           </CardContent>
-          <CardFooter className="flex justify-between items-center">
-            <div className="text-xl font-semibold">
-              Total:{" "}
-              <span className="text-primary">
-                {" "}
-                {new Intl.NumberFormat("es-CO", {
-                  style: "currency",
-                  currency: "COP",
-                }).format(Number(total))}
-              </span>
-            </div>
-            <Button size="lg" disabled={cartProducts.length === 0}>
-              Complete purchase
-            </Button>
-          </CardFooter>
         </Card>
-
-        <Button
-          size="lg"
-          disabled={cartProducts.length === 0}
-          className="absolute top-2 right-2"
-          onClick={() => deleteAll()}
-        >
-          Delete all
-        </Button>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold">
+                Order Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between items-center text-lg font-medium mb-4">
+                <span>Total:</span>
+                <span className="text-primary">
+                  {new Intl.NumberFormat("es-CO", {
+                    style: "currency",
+                    currency: "COP",
+                  }).format(Number(total))}
+                </span>
+              </div>
+              <Button
+                size="lg"
+                className="w-full"
+                disabled={cartProducts.length === 0}
+              >
+                Complete Purchase
+              </Button>
+            </CardContent>
+          </Card>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full"
+            disabled={cartProducts.length === 0}
+            onClick={() => deleteAll()}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete All Items
+          </Button>
+        </div>
       </div>
     </div>
   );

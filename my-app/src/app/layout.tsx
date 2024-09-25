@@ -6,6 +6,7 @@ import CategoriasMenu from "@/components/CategoriasMenu";
 import {Heart, ShoppingCart, Menu} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import type {Metadata} from "next";
+import CartButton from "@/components/CartButton";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -72,8 +73,7 @@ export default function RootLayout({
                     size="icon"
                     className="hidden md:flex"
                   >
-                    <ShoppingCart className="h-5 w-5" />
-                    <span className="sr-only">Carrito</span>
+                    <CartButton />
                   </Button>
                 </Link>
                 <Link legacyBehavior href="/favoritos">
