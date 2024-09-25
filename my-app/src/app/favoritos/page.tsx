@@ -30,8 +30,7 @@ const FavoritesPage: React.FC = () => {
         </Card>
         <Button
           className="absolute top-2 right-2"
-          size="sm"
-          variant="outline"
+          size="lg"
           onClick={deleteAllFav}
           disabled={favoriteProducts.length === 0}
         >

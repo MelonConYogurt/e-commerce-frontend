@@ -100,7 +100,7 @@ export const useCartStore = create<CartState>((set) => ({
 
   deleteByIdFav: (id) =>
     set((state) => ({
-      favoriteProducts: state.cartProducts.filter(
+      favoriteProducts: state.favoriteProducts.filter(
         (product) => product.id !== id
       ),
     })),

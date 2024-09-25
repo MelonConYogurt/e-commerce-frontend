@@ -43,7 +43,10 @@ export default function FavoriteProducts({data}: FavoriteProps) {
             variant="ghost"
             size="icon"
             className="absolute top-2 right-2"
-            onClick={() => deleteByIdFav(product.id)}
+            onClick={() => {
+              deleteByIdFav(product.id);
+              console.log("AAA");
+            }}
           >
             <Heart className="h-5 w-5 text-red-500 fill-red-500" />
           </Button>
