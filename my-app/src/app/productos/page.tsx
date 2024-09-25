@@ -19,7 +19,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {ChevronsUpDown, ChevronDown} from "lucide-react";
+import {ChevronDown} from "lucide-react";
 
 export default function Home() {
   const [priceRange, setPriceRange] = useState({min: "", max: ""});
