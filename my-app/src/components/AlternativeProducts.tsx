@@ -56,7 +56,7 @@ function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
         </button>
         {discountPercentage > 0 && (
           <div className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-md font-bold">
-            {discountPercentage}% OFF
+            {discountPercentage}% Descuento
           </div>
         )}
       </div>
@@ -116,7 +116,7 @@ function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
         {product.attributes.sizes &&
           product.attributes.sizes.data.length > 0 && (
             <div className="mb-4">
-              <h3 className="font-semibold mb-2">Available Sizes:</h3>
+              <h3 className="font-semibold mb-2">Tamaños Disponibles:</h3>
               <div className="flex flex-wrap gap-2">
                 {product.attributes.sizes.data.map((sizeData) => (
                   <button
@@ -138,7 +138,7 @@ function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
         {product.attributes.categories &&
           product.attributes.categories.data.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-3">Categories:</h3>
+              <h3 className="text-lg font-semibold mb-3">Categorías:</h3>
               <div className="flex flex-wrap gap-2">
                 {product.attributes.categories.data.map((category) => (
                   <span
@@ -168,14 +168,14 @@ function ProductCardItem({product}: ProductCardItemProps): JSX.Element {
                 src={
                   image.attributes?.formats?.small?.url || "/placeholder.svg"
                 }
-                alt={`${product.attributes.name} - Image ${imgIndex + 1}`}
+                alt={`${product.attributes.name} - Imagen ${imgIndex + 1}`}
                 onClick={() => setActiveImageIndex(imgIndex)}
               />
             ))}
           </div>
         </div>
       )}
-      <Toaster richColors position="top-right" expand={true} />
+      <Toaster richColors position="top-right" expand={false} />
     </div>
   );
 }

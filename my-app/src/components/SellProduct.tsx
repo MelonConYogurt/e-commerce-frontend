@@ -73,7 +73,7 @@ export default function SellProductCard({data}: SellProductCardProps) {
 
             <p className="text-sm text-gray-600">
               {product.attributes.colors?.data[activeColor]?.attributes.name} -
-              Size {activeSize}
+              Talla: {activeSize}
             </p>
             <p className="text-sm text-gray-600">${price}</p>
           </div>
@@ -85,12 +85,14 @@ export default function SellProductCard({data}: SellProductCardProps) {
         </div>
       ));
     } else {
-      toast.error("Please select a size");
+      toast.error("Por favor selecciona una talla");
     }
   };
 
   if (data.length === 0) {
-    return <div className="text-center py-10">No products found.</div>;
+    return (
+      <div className="text-center py-10">No se encontraron productos.</div>
+    );
   }
 
   const product = data[0];
@@ -179,7 +181,7 @@ export default function SellProductCard({data}: SellProductCardProps) {
           {product.attributes.colors &&
             product.attributes.colors.data.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-3">Colors:</h3>
+                <h3 className="text-lg font-semibold mb-3">Colores:</h3>
                 <div className="flex flex-wrap gap-3">
                   {product.attributes.colors.data.map((color, colorIndex) => (
                     <button
@@ -208,7 +210,9 @@ export default function SellProductCard({data}: SellProductCardProps) {
           {product.attributes.sizes &&
             product.attributes.sizes.data.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-3">Available Sizes:</h3>
+                <h3 className="text-lg font-semibold mb-3">
+                  Tamaños Disponibles:
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {product.attributes.sizes.data.map((sizeData) => (
                     <button
@@ -235,7 +239,7 @@ export default function SellProductCard({data}: SellProductCardProps) {
           {product.attributes.categories &&
             product.attributes.categories.data.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-3">Categories:</h3>
+                <h3 className="text-lg font-semibold mb-3">Categorias:</h3>
                 <div className="flex flex-wrap gap-2">
                   {product.attributes.categories.data.map((category) => (
                     <span
@@ -256,14 +260,14 @@ export default function SellProductCard({data}: SellProductCardProps) {
             }
           >
             <ShoppingCart className="w-5 h-5 mr-2" />
-            Add to Cart
+            Añadir al Carrito
           </button>
 
           {activeSize === null && (
             <div className="mt-4 flex items-center text-yellow-600">
               <AlertCircle className="w-5 h-5 mr-2" />
               <span className="text-sm">
-                Please select a size before adding to cart
+                Por favor selecciona una talla antes de añadir al carrito
               </span>
             </div>
           )}

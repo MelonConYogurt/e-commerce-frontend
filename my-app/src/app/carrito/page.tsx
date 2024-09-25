@@ -21,18 +21,20 @@ const CarritoPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>
+      <h1 className="text-3xl font-bold mb-8">Tu Carrito de Compras</h1>
       <div className="grid gap-8 md:grid-cols-3">
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold">Cart Items</CardTitle>
+            <CardTitle className="text-xl font-semibold">
+              Artículos en el Carrito
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {cartProducts.length > 0 ? (
               <CartProducts data={cartProducts} />
             ) : (
               <p className="text-center text-gray-500 py-8">
-                Your cart is empty
+                Tu carrito está vacío
               </p>
             )}
           </CardContent>
@@ -41,7 +43,7 @@ const CarritoPage: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle className="text-xl font-semibold">
-                Order Summary
+                Resumen del Pedido
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -59,7 +61,7 @@ const CarritoPage: React.FC = () => {
                 className="w-full"
                 disabled={cartProducts.length === 0}
               >
-                Complete Purchase
+                Completar Compra
               </Button>
             </CardContent>
           </Card>
@@ -71,7 +73,7 @@ const CarritoPage: React.FC = () => {
             onClick={() => deleteAll()}
           >
             <Trash2 className="mr-2 h-4 w-4" />
-            Delete All Items
+            Eliminar Todos los Artículos
           </Button>
         </div>
       </div>

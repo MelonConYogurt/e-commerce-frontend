@@ -62,7 +62,9 @@ export default function Home() {
         </section>
 
         <section className="my-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Photo shot</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Sesión de fotos
+          </h2>
           <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[600px]">
             <Card className="col-span-2 row-span-2 overflow-hidden">
               <CardContent className="p-0 h-full">

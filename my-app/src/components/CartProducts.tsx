@@ -26,7 +26,7 @@ export default function CartProducts({data}: CartProps) {
                 <h2 className="text-lg font-semibold">{product.name}</h2>
 
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm text-gray-500">Size: {product.size}</p>
+                  <p className="text-sm text-gray-500">Talla: {product.size}</p>
                   <div className="flex gap-2">
                     <p className="text-sm text-gray-500">Color:</p>
                     <div
@@ -61,7 +61,7 @@ export default function CartProducts({data}: CartProps) {
                     </Button>
                   </div>
                   <div className="flex flex-row justify-center items-center gap-2">
-                    <p>Amount:</p>
+                    <p>Sub-total:</p>
                     <p className="font-semibold">
                       {new Intl.NumberFormat("es-CO", {
                         style: "currency",

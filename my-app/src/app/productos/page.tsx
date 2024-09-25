@@ -200,7 +200,7 @@ export default function Home() {
                 <Separator />
                 <Collapsible>
                   <CollapsibleTrigger className="flex items-center justify-between w-full">
-                    <h3 className="font-semibold">Colors</h3>
+                    <h3 className="font-semibold">Colores</h3>
                     <ChevronDown className="h-4 w-4" />
                   </CollapsibleTrigger>
                   <CollapsibleContent className="space-y-4 mt-2">
