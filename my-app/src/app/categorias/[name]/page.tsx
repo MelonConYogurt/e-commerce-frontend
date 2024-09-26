@@ -8,8 +8,12 @@ import Transition from "@/components/Transition";
 async function fetchData(name: string) {
   try {
     const filter = `filters[categories][name][$eq]=${name}&`;
-    const response = await GetProductsFilter(1000, filter);
-    return response || [];
+    const response = await GetProductsFilter(1, filter);
+    if (response && response.data && response.meta) {
+      const {data, meta} = response;
+      console.log(meta);
+      return data || [];
+    }
   } catch (error) {
     console.error("Error fetching categories:", error);
     return [];
