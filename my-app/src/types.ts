@@ -62,6 +62,15 @@ export interface Product {
   };
 }
 
+export interface meta {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
+}
+
 export interface Category {
   id: number;
   attributes: {

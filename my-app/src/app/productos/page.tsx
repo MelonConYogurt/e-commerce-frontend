@@ -1,40 +1,51 @@
 "use client";
 
-import {useState, useEffect, useCallback} from "react";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Separator} from "@/components/ui/separator";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import ProductCard from "@/components/AlternativeProducts";
+import GetAllProductsPagination from "@/utils/GetProductsPagination";
 import GetAllCategories from "@/utils/getAllCategories";
 import GetAllTags from "@/utils/GetAllTags";
 import GetAllColors from "@/utils/GetAllColors";
-import GetAllProducts from "@/utils/getAllProducts";
 import GetProductsFilter from "@/utils/DinamicFilter";
 import Transition from "@/components/Transition";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Product, Category, FilterCategory} from "../../types";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {useState, useEffect, useCallback} from "react";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Separator} from "@/components/ui/separator";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {ChevronDown} from "lucide-react";
+import {ChevronDown, ChevronLeft, ChevronRight} from "lucide-react";
 
 export default function Home() {
-  const [priceRange, setPriceRange] = useState({min: "", max: ""});
+  const [priceRange, setPriceRange] = useState({min: 0, max: 0});
   const [data, setData] = useState<Product[]>([]);
   const [categoryValues, setCategoryValues] = useState<FilterCategory[]>([]);
   const [tagsValues, setTagsValues] = useState<FilterCategory[]>([]);
   const [colorsValues, setColorsValues] = useState<FilterCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalOfpage, setTotalOfPages] = useState(0);
+  const [actualPage, setActualPage] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       try {
-        const response = await GetAllProducts();
-        setData(response || []);
+        const response = await GetAllProductsPagination(page);
+
+        if (response && response.data && response.meta) {
+          const {data, meta} = response;
+          setData(data || []);
+          setActualPage(meta.pagination.page || 0);
+          setTotalOfPages(meta.pagination.pageCount || 0);
+        } else {
+          throw new Error("Respuesta no válida del servidor");
+        }
       } catch (error) {
         console.log(error);
         setData([]);
@@ -42,8 +53,9 @@ export default function Home() {
         setIsLoading(false);
       }
     }
+
     fetchData();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     async function MapFilters() {
@@ -92,21 +104,30 @@ export default function Home() {
         ConcatFilters += `filters[colors][name][$eq]=${element.name}&`;
       }
     });
+    if (priceRange.max > 0) {
+      ConcatFilters += `filters[price][$gte]=${priceRange.min}&filters[price][$lte]=${priceRange.max}&`;
+    }
     return ConcatFilters;
-  }, [categoryValues, tagsValues, colorsValues]);
+  }, [categoryValues, tagsValues, colorsValues, priceRange]);
 
   useEffect(() => {
     async function UpdateData() {
       try {
         const filters = StructureFilters();
-        const newResponse = await GetProductsFilter(1000, filters);
-        setData(newResponse);
+        const newResponse = await GetProductsFilter(page, filters);
+        if (newResponse && newResponse.data && newResponse.meta) {
+          setData(newResponse.data || []);
+          setActualPage(newResponse.meta.pagination.page || 0);
+          setTotalOfPages(newResponse.meta.pagination.pageCount || 0);
+        } else {
+          setData([]);
+        }
       } catch (error) {
         console.log(error);
       }
     }
     UpdateData();
-  }, [StructureFilters]);
+  }, [StructureFilters, page]);
 
   function handleInputChangesCategories(name: string, checked: boolean) {
     setCategoryValues((prev) =>
@@ -130,6 +151,14 @@ export default function Home() {
         item.name === name ? {...item, value: checked} : item
       )
     );
+  }
+
+  function handleNextPage() {
+    setPage((prev) => prev + 1);
+  }
+
+  function handlePreviusPage() {
+    setPage((prev) => prev - 1);
   }
 
   return (
@@ -245,23 +274,23 @@ export default function Home() {
                   <CollapsibleContent className="space-y-4 mt-2">
                     <Input
                       type="number"
-                      placeholder="Desde: 0"
+                      placeholder={`Desde: ${priceRange.min}`}
                       value={priceRange.min}
                       onChange={(e) =>
                         setPriceRange((prev) => ({
                           ...prev,
-                          min: e.target.value,
+                          min: parseFloat(e.target.value),
                         }))
                       }
                     />
                     <Input
                       type="number"
-                      placeholder="Hasta: 0"
+                      placeholder={`Desde: ${priceRange.max}`}
                       value={priceRange.max}
                       onChange={(e) =>
                         setPriceRange((prev) => ({
                           ...prev,
-                          max: e.target.value,
+                          max: parseFloat(e.target.value),
                         }))
                       }
                     />
@@ -271,24 +300,51 @@ export default function Home() {
             </Collapsible>
           </CardHeader>
         </Card>
-        <div className="flex-1 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
-          {isLoading ? (
-            <>
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="flex flex-col space-y-3">
-                  <Skeleton className="h-[200px] w-full rounded-xl" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
+        <div className="flex flex-col gap-20 justify-center items-center">
+          <div className="flex-1 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
+            {isLoading ? (
+              <>
+                {[...Array(6)].map((_, index) => (
+                  <div key={index} className="flex flex-col space-y-3">
+                    <Skeleton className="h-[200px] w-full rounded-xl" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </>
-          ) : data && data.length > 0 ? (
-            <ProductCard data={data} />
-          ) : (
-            <p>No products found.</p>
-          )}
+                ))}
+              </>
+            ) : data && data.length > 0 ? (
+              <ProductCard data={data} />
+            ) : (
+              <p className="h-4/5">No products found.</p>
+            )}
+          </div>
+          <div className="flex items-center justify-center mt-8 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+            <div className="inline-flex items-center justify-center gap-3">
+              <button
+                disabled={actualPage <= 1}
+                onClick={() => handlePreviusPage()}
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:focus:ring-offset-gray-900"
+              >
+                <span className="sr-only">Previous Page</span>
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                Pagina {actualPage} de {totalOfpage}
+              </div>
+
+              <button
+                disabled={actualPage >= totalOfpage}
+                onClick={() => handleNextPage()}
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:focus:ring-offset-gray-900"
+              >
+                <span className="sr-only">Next Page</span>
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </Transition>
